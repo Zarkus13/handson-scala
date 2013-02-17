@@ -90,6 +90,12 @@ class e3_un_peu_plus_algebrique extends HandsOnSuite {
       case SacVide(_) => fail("Cela ne devrait pas être un Sac Vide")
     }
 
+    val sacVide=SacVide(Set("sac vide"))
+
+    sacVide.map(x=>x+1) match {
+      case _:SacPlein => fail("Cela ne devrait pas être un Sac Plein") 
+      case _:SacVide => Unit
+    }
   }
 
   test("toujours comme avant, je peux combiner mes sac") {
