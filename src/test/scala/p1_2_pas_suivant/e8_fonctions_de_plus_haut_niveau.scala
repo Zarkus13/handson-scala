@@ -106,7 +106,7 @@ class e8_fonctions_de_plus_haut_niveau extends HandsOnSuiteP1 {
     val xs = List(12, 11, 5, 20, 3, 13, 2)
     customFilter(onlyEven)(xs) should be(List(12, 20, 2))
 
-    val onlyEvenFilter = customFilter(onlyEven) _
+    val onlyEvenFilter = customFilter(onlyEven) _  //attention au caractère '_' qui indique au compilateur qu'il faut utiliser une fonction currifiée 
     onlyEvenFilter(xs) should be(List(12, 20, 2))
   }
 }
