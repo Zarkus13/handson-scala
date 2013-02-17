@@ -23,7 +23,7 @@ class e3_un_peu_plus_algebrique extends HandsOnSuite {
 
     def contenuOuSinon(replacement:Int):Int
 
-    def addTags(tag:Set[String]):Sac
+    def addTags(tags:Set[String]):Sac
 
   }
 
@@ -41,7 +41,7 @@ class e3_un_peu_plus_algebrique extends HandsOnSuite {
 
     override def contenuOuSinon(replacement:Int):Int = replacement
 
-    def addTags(tag: Set[String]): Sac = ???
+    def addTags(tags: Set[String]): Sac = ???
   }
 
   case class SacPlein(contenu:Int , tagDeSac:Set[String] = Set.empty) extends Sac {
@@ -54,7 +54,7 @@ class e3_un_peu_plus_algebrique extends HandsOnSuite {
 
     override def contenuOuSinon(replacement:Int):Int = contenu
 
-    def addTags(tag: Set[String]): Sac = ???
+    def addTags(tags: Set[String]): Sac = ???
   }
 
 
