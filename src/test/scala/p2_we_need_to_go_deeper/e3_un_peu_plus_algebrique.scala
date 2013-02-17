@@ -113,6 +113,13 @@ class e3_un_peu_plus_algebrique extends HandsOnSuite {
 
       case _ => fail("ne doit pas être vide")
     }
+    val sacVide=SacVide(Set("sac vide"))
+    val combinaisonVide = for (deux <- sacVide; cent <- sacDeCent) yield( deux * cent )
+    combinaisonVide match {
+      case _:SacPlein => fail("ne doit pas être plein")
+      case _ => Unit
+    }
+
   }
 
   test("on peut filter le contenu d'un sac") {
