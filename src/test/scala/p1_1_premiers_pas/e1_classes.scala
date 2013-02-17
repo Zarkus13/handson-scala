@@ -31,7 +31,7 @@ class e1_classes extends HandsOnSuiteP1{
     aClass.description should be("description goes here")
 
     aClass.description = "new description"
-    aClass.description should be("new description")
+    aClass.description should be(__)
   }
 
   /**
