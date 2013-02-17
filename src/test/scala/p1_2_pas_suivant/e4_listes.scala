@@ -24,7 +24,7 @@ class e4_listes extends HandsOnSuiteP1{
     (a == Nil) should be(__)
     (b == Nil) should be(__)
     (a == b) should be(__)
-
+    (Nil == List()) should be (__)
   }
 
   /**
