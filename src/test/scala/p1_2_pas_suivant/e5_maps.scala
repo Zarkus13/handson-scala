@@ -32,6 +32,7 @@ class e5_maps extends HandsOnSuiteP1 {
     // ajout d'un élément
     val aNewMap = myMap + ("BL" -> "Belfort")
 
+    myMap.contains("BL") should be (__) // les maps sont immutables par défaut 
     aNewMap.contains("BL") should be(__)
   }
 
