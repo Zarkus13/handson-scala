@@ -23,7 +23,7 @@ class e3_un_peu_plus_algebrique extends HandsOnSuite {
 
     def contenuOuSinon(replacement:Int):Int
 
-    def addTags(tag:Set[String]):Sac
+    def addTags(tags:Set[String]):Sac
 
   }
 
@@ -41,7 +41,7 @@ class e3_un_peu_plus_algebrique extends HandsOnSuite {
 
     override def contenuOuSinon(replacement:Int):Int = replacement
 
-    def addTags(tag: Set[String]): Sac = ???
+    def addTags(tags: Set[String]): Sac = ???
   }
 
   case class SacPlein(contenu:Int , tagDeSac:Set[String] = Set.empty) extends Sac {
@@ -54,7 +54,7 @@ class e3_un_peu_plus_algebrique extends HandsOnSuite {
 
     override def contenuOuSinon(replacement:Int):Int = contenu
 
-    def addTags(tag: Set[String]): Sac = ???
+    def addTags(tags: Set[String]): Sac = ???
   }
 
 
@@ -90,6 +90,12 @@ class e3_un_peu_plus_algebrique extends HandsOnSuite {
       case SacVide(_) => fail("Cela ne devrait pas être un Sac Vide")
     }
 
+    val sacVide=SacVide(Set("sac vide"))
+
+    sacVide.map(x=>x+1) match {
+      case SacPlein(_,_) => fail("Cela ne devrait pas être un Sac Plein") 
+      case _ => Unit
+    }
   }
 
   test("toujours comme avant, je peux combiner mes sac") {
@@ -107,6 +113,13 @@ class e3_un_peu_plus_algebrique extends HandsOnSuite {
 
       case _ => fail("ne doit pas être vide")
     }
+    val sacVide=SacVide(Set("sac vide"))
+    val combinaisonVide = for (deux <- sacVide; cent <- sacDeCent) yield( deux * cent )
+    combinaisonVide match {
+      case SacPlein(_,_) => fail("ne doit pas être plein")
+      case _ => Unit
+    }
+
   }
 
   test("on peut filter le contenu d'un sac") {
