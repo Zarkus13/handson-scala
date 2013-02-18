@@ -93,8 +93,8 @@ class e3_un_peu_plus_algebrique extends HandsOnSuite {
     val sacVide=SacVide(Set("sac vide"))
 
     sacVide.map(x=>x+1) match {
-      case _:SacPlein => fail("Cela ne devrait pas être un Sac Plein") 
-      case _:SacVide => Unit
+      case SacPlein(_,_) => fail("Cela ne devrait pas être un Sac Plein") 
+      case _ => Unit
     }
   }
 
@@ -116,7 +116,7 @@ class e3_un_peu_plus_algebrique extends HandsOnSuite {
     val sacVide=SacVide(Set("sac vide"))
     val combinaisonVide = for (deux <- sacVide; cent <- sacDeCent) yield( deux * cent )
     combinaisonVide match {
-      case _:SacPlein => fail("ne doit pas être plein")
+      case SacPlein(_,_) => fail("ne doit pas être plein")
       case _ => Unit
     }
 
