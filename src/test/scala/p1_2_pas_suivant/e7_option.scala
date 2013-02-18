@@ -36,7 +36,7 @@ class e7_option extends HandsOnSuiteP1 {
 
   test("On ne peut pas caster None en n'importe quel objet") {
     intercept[ClassCastException] {
-      assert(None.asInstanceOf[String] === classOf[ClassCastException])
+      assert(None.asInstanceOf[String].getClass === classOf[String])
     }
   }
 
