@@ -78,7 +78,7 @@ class e3_un_peu_plus_algebrique extends HandsOnSuite {
   }
 
 
-  test("toujours comme avant, je peux appliquer une fonction à l'intétieur") {
+  test("toujours comme avant, je peux appliquer une fonction à l'intérieur") {
 
     val sacDeZero = Sac(0, Set("petit sac"))
 
