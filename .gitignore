@@ -6,3 +6,5 @@ target
 .project
 .settings
 lib_managed
+ivyrepo
+sbtboot
