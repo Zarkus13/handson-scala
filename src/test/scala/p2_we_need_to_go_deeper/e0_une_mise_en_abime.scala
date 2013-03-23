@@ -53,7 +53,7 @@ class e0_une_mise_en_abime /* ou un sac de sac */ extends HandsOnSuite {
 
     incrémenteUnSac(monPetitSacDeZero).contenu should be(__)
 
-    incrémenteUnSac(monPetitSacDeZero).tagDeSac should contain(__)
+    incrémenteUnSac(monPetitSacDeZero).tagDeSac contains "petit sac" should be(__)
 
   }
 
