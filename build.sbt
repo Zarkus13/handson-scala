@@ -32,4 +32,4 @@ addCommandAlias("p2", "test-only p2*")
 
 addCommandAlias("p3", "test-only p3*")
 
-addCommandAlias("go", "~test-only HandsOnScala")
+addCommandAlias("go", "~ test-only HandsOnScala")
