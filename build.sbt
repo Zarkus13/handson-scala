@@ -24,12 +24,14 @@ libraryDependencies += "org.scala-lang" % "scala-compiler" % "2.10.0"
 libraryDependencies += "org.scalatest" %% "scalatest" % "1.9.1" % "test"
 
 
-addCommandAlias("p1-1", "test-only p1_1*")
+addCommandAlias("p1-1", "test-only partie_1_1")
 
-addCommandAlias("p1-2", "test-only p1_2*")
+addCommandAlias("p1-2", "test-only partie_1_2")
 
-addCommandAlias("p2", "test-only p2*")
+addCommandAlias("p2", "test-only partie_2")
 
-addCommandAlias("p3", "test-only p3*")
+addCommandAlias("p3", "test-only partie_3")
+
+addCommandAlias("p4", "test-only partie_4")
 
 addCommandAlias("go", "~ test-only HandsOnScala")
