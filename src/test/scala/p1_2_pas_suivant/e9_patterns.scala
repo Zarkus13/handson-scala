@@ -1,0 +1,196 @@
+package p1_2_pas_suivant
+
+import p1_1_premiers_pas.HandsOnSuiteP1
+
+/**
+* On passe aux patterns et au pattern matching
+*/ 
+
+class e9_extracteurs_et_patterns extends HandsOnSuiteP1 {
+ /**
+  * Un extracteur est l'inverse d'un constructeur.
+  * On definit un extracteur en positionnant une méthode unapply sur
+  * l'object companion d'un type
+  */
+  test("Un extracteur est le contraire d'un constructeur") {
+		
+		class Email(val value:String)
+		object Email { def unapply(email:Email):Option[String]=Option(email.value)}
+
+		val mailstring="foo@bar.com"
+		val email=new Email(mailstring)
+		val Email(extractedString)=email
+  	
+  	(extractedString == mailstring) should be(__)
+  }
+
+ /**
+  * Les extracteurs fonctionnent avec plusieurs valeurs
+  */
+  test("les extracteurs fonctionnent aussi avec plusieurs valeurs") {				
+		class Email(val value:String, val spamRatio:Integer)
+		object Email { 
+			def unapply(email:Email):Option[(String,Integer)]=Option((email.value,email.spamRatio))
+		}
+
+		val mailstring="foo@bar.com"
+		val spamRatio=5
+		val email=new Email(mailstring,4)
+		val Email(extractedString,extractedRatio)=email
+  	
+  	(extractedRatio == spamRatio) should be(__)
+  	(extractedString == mailstring) should be(__)
+  }
+
+ /**
+  * Créer une case class définit automatiquement un extracteur 
+  * pour cette case class
+  */
+  test("Un extracteur est definit automatiquement pour toute case class") {		
+		case class Email(val value:String)
+
+		val mailstring="foo@bar.com"
+		val email=new Email(mailstring)
+		val Email(extractedString)=email
+  	
+  	(extractedString == mailstring) should be(__)
+  }
+
+ /**
+  * le pattern matching peut être utilisé sur des chaines
+  */
+  test("le pattern matching peut être utilisé comme un switch/case") {		
+		val string="B"
+
+		val actual = "B" match {
+			case "A" => "stringA"
+			case "B" => "stringB"
+			case "C" => "stringC"
+			case _ => "DEFAULT"
+		}
+
+		(actual=="stringB") should be (__)
+
+		val default = "E" match {
+			case "A" => "stringA"
+			case "B" => "stringB"
+			case "C" => "stringC"
+			case _ => "DEFAULT"
+		}
+
+		(default=="DEFAULT") should be (__)
+  } 
+
+  /**
+  * le pattern matching peut être utilisé sur des types
+  */
+  test("le pattern matching peut être utilisé sur des types") {		
+  	sealed trait Root
+  	class A(val a:String="A") extends Root
+  	class B(val b:String="B") extends Root
+  	class C(val c:String="C") extends Root
+		
+		val b:Root=new B()
+		
+		val actual = b match {
+			case matchedA:A => "stringA"
+			case matchedB:B => "stringB"
+			case matchedC:C => "stringC"
+			case _ => "DEFAULT"
+		}
+
+		(actual=="stringB") should be (__)
+  } 
+
+  /**
+  * le pattern matching peut être utilisé avec des extracteurs
+  */
+  test("le pattern matching peut être utilisé avec des extracteurs") {		
+  	case class A(val a:String="A")
+		val a:A=new A(a="b")
+		
+		val actual = a match {
+			case A("a") => "stringA"
+			case A("b") => "stringB"
+			case A("c") => "stringC"
+			case _ => "DEFAULT"
+		}
+
+		(actual=="stringB") should be (__)
+  }
+
+  test("le pattern matching peut être utilisé avec des extracteurs pour capturer des valeurs") {		
+  	case class A(val a:String, val b:String)
+
+		val a:A=new A(a="string", b="B")
+		
+		val actual = a match {
+			case A(a,b) => a+b
+			case _ => "DEFAULT"
+		}
+
+		(actual=="stringB") should be (__)
+  } 
+  
+  test("Il n'est pas obligatoire de capturer toutes les valeurs") {		
+  	case class A(val a:String, val b:String)
+		val a:A=new A(a="string", b="B")
+		
+		val actual = a match {
+			case A(a,_) => a
+			case _ => "DEFAULT"
+		}
+
+		(actual=="string") should be (__)
+  } 
+
+  test("You can nest patterns") {		
+  	case class A(val a:String, val b:String)
+  	case class B(val a:A)
+
+		val a:A=new A(a="string", b="B")
+		val b:B=new B(a)
+
+		val actual = b match {
+			case B(A(_,b)) => b
+			case _ => "DEFAULT"
+		}
+
+		(actual=="B") should be (__)
+  } 
+
+  test("Lists have  different patterns") {		
+  	val s=Seq("a","b")
+		val actual = s match {
+			case Seq("a","b") => "ok"
+			case _ => "DEFAULT"
+		}
+
+		(actual=="ok") should be (__)
+
+		val nextActual = s match {
+			case "a"::"b"::Nil => "ok"
+			case _ => "DEFAULT"
+		}
+
+		(nextActual=="ok") should be (__)
+
+		val lastActual = s match {
+			case head::tail => head
+			case _ => "DEFAULT"
+		}
+
+		(lastActual=="a") should be (__)
+  } 
+
+  test("patterns are evaluated in declaration order") {		
+  	val s=Seq("a","b")
+		val actual = s match {
+			case Seq("a","b") => "ok"
+			case head::tail => "ko"
+			case _ => "DEFAULT"
+		}
+
+		(actual=="ok") should be (__)
+  } 
+}
