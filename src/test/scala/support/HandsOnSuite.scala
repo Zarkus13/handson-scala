@@ -14,26 +14,44 @@ trait HandsOnSuite extends FunSuite with ShouldMatchers {
 
   private class ReportToTheStopper(other: Reporter) extends Reporter {
     var failed = false
-    def failure(event: CustomStopper.EventWrapper) {
+    def failure(event: Event, exception: Option[Throwable]) {
       failed = true
-      info("*****************************************")
-      info("*****************************************")
+      event match {
+        case e:TestFailed => 
+          info("/!\\ /!\\ /!\\ /!\\ /!\\ /!\\ /!\\ /!\\ /!\\ /!\\ /!\\")
+          info("               TEST FAILED                 ")
+        case _ =>
+          info("*******************************************")
+          info("               TEST PENDING                ")
+      }
       info("")
       info("")
+      CustomStopper.testFailed(event).replace("\n","\n ").split("\n").foreach(info(_))
       info("")
-      info(CustomStopper.testFailed(event))
+      exception match {
+        case Some(e) => {
+          info("  => " + e.getMessage + " <= ")
+          info("")
+          e.getStackTrace.take(5).foreach( _e => info("     " + _e.toString))
+        }
+        case None =>
+      }
       info("")
       info("")
-      info("")
-      info("*****************************************")
-      info("*****************************************")
+      event match {
+        case e:TestFailed => 
+          info("/!\\ /!\\ /!\\ /!\\ /!\\ /!\\ /!\\ /!\\ /!\\ /!\\ /!\\")
+        case _ =>
+          info("*******************************************")
+      }
     }
 
     def apply(event: Event) {
       event match {
-        case e: TestIgnored => failure(event.asInstanceOf[CustomStopper.EventWrapper])
-        case e: TestFailed => failure(event.asInstanceOf[CustomStopper.EventWrapper])
-        case e: TestPending => failure(event.asInstanceOf[CustomStopper.EventWrapper])
+        case e: TestFailed => 
+          failure(e, e.throwable)
+        case e: TestPending => 
+          failure(event, None)
         case _ => other(event)
       }
 

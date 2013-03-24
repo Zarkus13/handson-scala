@@ -24,23 +24,6 @@ class HandsOnScala extends HandsOn {
     new partie_2,
     new partie_3,
     new partie_4
-    /*
-    new e0_vars_vals,
-    new e1_classes,
-    new e2_case_classes,
-    new e3_boucle_for,
-    new e4_listes,
-    new e5_maps,
-    new e6_sets,
-    new e7_option,
-    new e8_fonctions_de_plus_haut_niveau,
-    new e0_une_mise_en_abime,
-    new e1_un_peu_plus_generique,
-    new e3_un_peu_plus_algebrique,
-    new e4_on_a_besoin_de_la_covariance,
-    new e0_list,
-    new e1_bonus_stream,
-    new testEventSourcing*/
   )
 }
 
@@ -59,7 +42,8 @@ class partie_1_2 extends HandsOn {
     new e5_maps,
     new e6_sets,
     new e7_option,
-    new e8_fonctions_de_plus_haut_niveau
+    new e8_fonctions_de_plus_haut_niveau,
+    new e9_extracteurs_et_patterns
   )
 }
 
