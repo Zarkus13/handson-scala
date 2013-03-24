@@ -3,8 +3,23 @@ package p1_2_pas_suivant
 import p1_1_premiers_pas.HandsOnSuiteP1
 
 /**
-* Les options :
-*  - http://www.scala-lang.org/api/current/index.html#scala.Option
+*   Une Option comme sont nom l’indique représente une valeur optionnelle. 
+*   Une instance de Option est soit une instance de Some soit de None 
+*   (None dans le cas où il n’y a aucune valeur).
+*
+*   Exemple :
+*   Imaginons que l’on veuille trouver une personne dans une BDD. Elle n’existe peut-être pas. 
+*   Dans ce cas en Scala on écrira :
+*
+*       def findPerson(key: Int): Option[Person]
+*
+*   Ca permet de dire que si la personne n’est pas trouvée, alors on renvoie None et non un 'null'
+*   comme dans d’autres langages.
+*   Le type Option permet donc de traiter des cas pour lesquels aucun résultat n’existe, 
+*   et de se prémunir des NPE/absence de valeur.
+*
+*   Quelques liens :
+*     - http://www.scala-lang.org/api/current/index.html#scala.Option
 */
 
 class e7_option extends HandsOnSuiteP1 {

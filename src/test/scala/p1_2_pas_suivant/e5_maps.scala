@@ -3,7 +3,11 @@ package p1_2_pas_suivant
 import p1_1_premiers_pas.HandsOnSuiteP1
 
 /**
-*  Puis aux MAP :http://www.scala-lang.org/api/current/index.html#scala.collection.concurrent.Map
+*   Comme dans les autres langages, une map de type Map[Key, Valeur] est une structure 
+*   de donnée qui à une clé de type Key associe une valeur de type Value. 
+*   Les clés ne sont pas obligatoirement du même type.
+*
+*   Puis aux MAP :http://www.scala-lang.org/api/current/index.html#scala.collection.concurrent.Map
 */
 
 class e5_maps extends HandsOnSuiteP1 {
@@ -58,7 +62,7 @@ class e5_maps extends HandsOnSuiteP1 {
     val aNewOtherMap = myMap -- List("BE", "BL")
     aNewOtherMap.contains("BE") should be(__)
     aNewOtherMap.contains("BL") should be(__)
-    // une exception est jetté dans le cas l'élément n'est pas présent dans la map
+    // une exception est jettée dans le cas l'élément n'est pas présent dans la map
     intercept[NoSuchElementException] {
       aNewOtherMap("BL") should be("Belfort")
     }
