@@ -15,9 +15,9 @@ package p1_1_premiers_pas
 */
 class e0_vars_vals extends HandsOnSuiteP1 {
 
-  test("Les vars peuvent être réaffectées") {
+  exercice("Les vars peuvent être réaffectées") {
     var a = 5
-    a should be(__)
+    a should be(6)
 
     a = 7
     a should be(__)

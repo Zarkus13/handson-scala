@@ -21,7 +21,7 @@ libraryDependencies += "org.scala-lang" % "scala-reflect" % "2.10.0"
 
 libraryDependencies += "org.scala-lang" % "scala-compiler" % "2.10.0"
 
-libraryDependencies += "org.scalatest" %% "scalatest" % "1.9.1" % "test"
+libraryDependencies += "org.scalatest" %% "scalatest" % "1.9.1"
 
 
 addCommandAlias("p1-1", "test-only partie_1_1")

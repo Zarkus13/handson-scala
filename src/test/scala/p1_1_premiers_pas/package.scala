@@ -8,9 +8,7 @@ import support.HandsOnSuite
 package object p1_1_premiers_pas {
 
   trait HandsOnSuiteP1 extends support.HandsOnSuite {
-    override protected def test(testName: String, testTags: Tag*)(testFun: => Unit) {
-      super.test(testName, (testTags :+ (HandsOnSuite.partie1)):_*)(testFun)
-    }
+
   }
 
 }

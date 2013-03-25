@@ -6,11 +6,34 @@ import org.scalatest.matchers.{Matcher, ShouldMatchers}
 import org.scalatest.events.{TestPending, TestFailed, TestIgnored, Event, InfoProvided}
 import org.scalatest.exceptions.{TestPendingException}
 
-trait HandsOnSuite extends FunSuite with ShouldMatchers {
+
+
+import language.experimental.macros
+
+import recorder.MyFunSuite
+import recorder.RecorderMacro
+
+
+trait HandsOnSuite extends MyFunSuite with ShouldMatchers {
   def __ : Matcher[Any] = {
     throw new TestPendingException
   }
 
+  implicit val suite:MyFunSuite = this
+
+
+  /*class RecorderWrapper(suite:HandsOnSuite) extends (Unit => Unit) {
+    def apply(testFun: Unit):Unit = macro RecorderMacro.apply
+  }  */
+
+  def exercice(testName:String)(testFun: Unit)(implicit suite: MyFunSuite):Unit = macro RecorderMacro.apply
+
+
+
+  /*override protected def test(testName: String, tags: Tag*)(testFun: => Unit):Unit
+
+
+  = macro RecorderMacro.apply  */
 
   private class ReportToTheStopper(other: Reporter) extends Reporter {
     var failed = false
