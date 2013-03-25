@@ -29,7 +29,7 @@ rem We use the value of the JAVA_OPTS environment variable if defined
 set _JAVA_OPTS=%JAVA_OPTS%
 if "%_JAVA_OPTS%"=="" set _JAVA_OPTS=-Xmx512M -XX:MaxPermSize=256m -XX:ReservedCodeCacheSize=128m -Dfile.encoding=UTF8 -Dsbt.log.format=true
 
-set SBT_OPTS=-Dsbt.ivy.home=.\sbt\repository -Dsbt.boot.directory=.\sbt\boot -Dsbt.boot.properties=.\sbt\sbt.boot.properties  -Xss1M -XX:+CMSClassUnloadingEnabled
+set SBT_OPTS=-Dsbt.ivy.home=.\sbt\repository -Dsbt.boot.directory=.\sbt\boot -Dsbt.boot.properties=sbt/sbt.boot.properties  -Xss1M -XX:+CMSClassUnloadingEnabled
 
 :run
 
