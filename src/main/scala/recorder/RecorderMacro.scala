@@ -2,7 +2,7 @@ package recorder
 
 
 import reflect.macros.Context
-
+import org.scalatest.exceptions._
 
 import reflect.macros.Context
 
@@ -18,13 +18,20 @@ class RecorderMacro[C <: Context](val context: C) {
         try {
           testFun.splice
         } catch {
+          case e: TestPendingException => {
+            val mes = Option(e.getMessage).getOrElse("")
+            val ctx = context.literal(getTexts(testFun.tree)).splice
+            throw new MyTestPendingException(mes, ctx, e, None)
+          }
+          case e: TestFailedException => {
+            val mes = Option(e.getMessage).getOrElse("")
+            val ctx = context.literal(getTexts(testFun.tree)).splice
+            throw new MyTestFailedException(mes, ctx, e, e.failedCodeFileNameAndLineNumberString)
+          }
           case e: Exception => {
-            val mes = "\n" + Option(e.getMessage).getOrElse("") + "\n\n" +
-              context.literal(getTexts(testFun.tree)).splice  +
-              "\n\n"
-
-
-            throw new Exception(mes, e)
+            val mes = Option(e.getMessage).getOrElse("")
+            val ctx = context.literal(getTexts(testFun.tree)).splice
+            throw new MyException(mes, ctx, e, None)
           }
         }
       })

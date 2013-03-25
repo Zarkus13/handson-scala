@@ -17,14 +17,13 @@ class e0_vars_vals extends HandsOnSuiteP1 {
 
   exercice("Les vars peuvent être réaffectées") {
     var a = 5
-
-    a should be(__)
+    a should be(5)
 
     a = 7
-    a should be(__)
+    a should be(7)
   }
 
-  test("Par contre les vals sont immuables (équivalent de final Java), elles ne peuvent pas être réaffectées") {
+  exercice("Par contre les vals sont immuables (équivalent de final Java), elles ne peuvent pas être réaffectées") {
     val a = 5
     a should be(__)
 

@@ -10,12 +10,13 @@ object CustomStopper extends Stopper{
   var oneTestFailed = false
   override def apply() = oneTestFailed
 
-  def testFailed (event: Event): String = {
+  def testFailed : Unit = {
     oneTestFailed = true
-    meditationMessage(event)
+    ()
+    //meditationMessage(event)
   }
 
-  private def meditationMessage(event: Event) = {
+/*  private def meditationMessage(event: Event) = {
     event match {
       case e: TestIgnored => "Ce n'est pas bien d'ignorer le test «"+ e.testName + "»     \nde la suite «" + e.suiteName + "»     "
       case e: TestFailed => s"Le test «${e.testName}»     \nde la suite «${e.suiteName}» a echoue:     "
@@ -23,4 +24,5 @@ object CustomStopper extends Stopper{
       case _ => ""
     }
   }
+*/
 }
