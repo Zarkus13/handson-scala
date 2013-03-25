@@ -17,7 +17,8 @@ class e0_vars_vals extends HandsOnSuiteP1 {
 
   exercice("Les vars peuvent être réaffectées") {
     var a = 5
-    a should be(6)
+
+    a should be(__)
 
     a = 7
     a should be(__)
