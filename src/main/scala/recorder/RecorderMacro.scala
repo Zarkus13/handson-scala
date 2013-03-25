@@ -13,8 +13,18 @@ class RecorderMacro[C <: Context](val context: C) {
            (testFun: context.Expr[Unit])
            (suite: context.Expr[MyFunSuite]): context.Expr[Unit] = {
 
+    val expressions = recordExpressions(testFun.tree)
+
+
+
+
     reify(
       suite.splice.testPublic(testName.splice)({
+
+        val listener = new TestRecorderListener()
+
+        val recoderRuntime = new RecorderRuntime(listener)
+
         try {
           testFun.splice
         } catch {
@@ -27,6 +37,8 @@ class RecorderMacro[C <: Context](val context: C) {
             throw new Exception(mes, e)
           }
         }
+
+
       })
     )
   }
@@ -36,6 +48,22 @@ class RecorderMacro[C <: Context](val context: C) {
     val exps = splitExpressions(recording)
     exps.map(ex => getText(ex)).mkString("\n")
 
+  }
+
+  private[this] def declareRuntime: Tree = {
+    val runtimeClass = context.mirror.staticClass(classOf[RecorderRuntime].getName)
+    ValDef(
+      Modifiers(),
+      newTermName("$org_expecty_recorderRuntime"),
+      TypeTree(runtimeClass.toType),
+      Apply(
+        Select(
+          New(Ident(runtimeClass)),
+          newTermName("<init>")),
+        List(
+          Select(
+            context.prefix.tree,
+            newTermName("listener")))))
   }
 
 
@@ -65,7 +93,7 @@ class RecorderMacro[C <: Context](val context: C) {
   private[this] def resetValues: Tree =
     Apply(
       Select(
-        Ident(newTermName("$org_expecty_recorderRuntime")),
+        Ident(newTermName("recoderRuntime")),
         newTermName("resetValues")),
       List())
 

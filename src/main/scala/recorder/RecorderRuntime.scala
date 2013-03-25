@@ -14,9 +14,9 @@
 package recorder
 
 // one instance per recording
-class RecorderRuntime(listener: RecorderListener[Boolean]) {
+class RecorderRuntime(listener: RecorderListener[Any]) {
   var recordedValues: List[RecordedValue] = _
-  var recordedExprs: List[RecordedExpression[Boolean]] = List.empty
+  var recordedExprs: List[RecordedExpression[Any]] = List.empty
 
   def resetValues() {
     recordedValues = List.empty
@@ -29,13 +29,13 @@ class RecorderRuntime(listener: RecorderListener[Boolean]) {
     value
   }
 
-  def recordExpression(text: String, ast: String, value: Boolean) {
+  def recordExpression(text: String, ast: String, value: Any) {
     val recordedExpr = RecordedExpression(text, ast, value, recordedValues)
     listener.expressionRecorded(recordedExpr)
     recordedExprs = recordedExpr :: recordedExprs
   }
 
-  def completeRecording(): Boolean = {
+  def completeRecording(): Any = {
     val lastRecorded = recordedExprs.head
     val recording = Recording(lastRecorded.value, recordedExprs)
     listener.recordingCompleted(recording)
