@@ -3,6 +3,7 @@ import p1_2_pas_suivant._
 import p2_we_need_to_go_deeper._
 import p3_cons_et_nil._
 import p4_bonus_event_sourcing._
+import p5_type_classes._
 
 import org.scalatest._
 import support.CustomStopper
@@ -23,7 +24,8 @@ class HandsOnScala extends HandsOn {
     new partie_1_2,
     new partie_2,
     new partie_3,
-    new partie_4
+    new partie_4,
+    new partie_5
   )
 }
 
@@ -69,3 +71,9 @@ class partie_4 extends HandsOn {
   )  
 }
 
+class partie_5 extends HandsOn {
+  override def nestedSuites = List(
+    new testJson,
+    new client.testJsonClient
+  )  
+}

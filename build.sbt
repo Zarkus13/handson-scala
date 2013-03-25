@@ -34,4 +34,6 @@ addCommandAlias("p3", "test-only partie_3")
 
 addCommandAlias("p4", "test-only partie_4")
 
+addCommandAlias("p5", "test-only partie_5")
+
 addCommandAlias("go", "~ test-only HandsOnScala")
