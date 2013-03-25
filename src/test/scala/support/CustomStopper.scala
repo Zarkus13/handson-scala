@@ -17,9 +17,9 @@ object CustomStopper extends Stopper{
 
   private def meditationMessage(event: Event) = {
     event match {
-      case e: TestIgnored => "Ce n'est pas bien d'ignorer le test "+ e.testName + " \nde la suite " + e.suiteName
-      case e: TestFailed => s"Le test '${e.testName}' \nde la suite '${e.suiteName}' a echoue:"
-      case e: TestPending => s"Le test '${e.testName}' \nde la suite '${e.suiteName}' est en attente d'une implémentation"
+      case e: TestIgnored => "Ce n'est pas bien d'ignorer le test «"+ e.testName + "» \nde la suite «" + e.suiteName + "»"
+      case e: TestFailed => s"Le test «${e.testName}» \nde la suite «${e.suiteName}» a echoue:"
+      case e: TestPending => s"Le test «${e.testName}» \nde la suite «${e.suiteName}» est en attente d'une implémentation"
       case _ => ""
     }
   }
