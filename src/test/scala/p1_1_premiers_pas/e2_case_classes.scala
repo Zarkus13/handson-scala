@@ -5,22 +5,22 @@ import support.HandsOnSuite
 /**
 *  Passons aux cases classes...
 *
-*  En Scala on peut définir des classes un peu particulières avec le mot-clé 'case', et on les 
+*  En Scala on peut définir des classes un peu particulières avec le mot-clé 'case', et on les
 *  appelle des case classes.
-* 
-*  Grâce au mot-clé 'case' devant votre classe, le compilateur va apporter 
+*
+*  Grâce au mot-clé 'case' devant votre classe, le compilateur va apporter
 *  les fonctionnalités suivantes :
 *
-*     - le constructeur de la classe est implicité
-*     - pas besoin de mettre un 'new 'lors de la création d’une nouvelle instance 
+*     - le constructeur de la classe est rendu implicite
+*        => pas besoin de mettre un 'new 'lors de la création d'une nouvelle instance
 *     - les implémentations "naturelles" des méthodes equals, toString, hashcode sont rajoutées
-*     - les getters sont implicitées
-*     - par défaut, les arguments passés en paramètres de classe sont des 'val'
+*     - les getters deviennent implicites
+*     - par défaut, les arguments passés en paramètres de classe sont des 'val' public
 *     - ajout d'une méthode copy, pour copier un élément
-*  
-*  Enfin, en plus de rendre le code plus concis, l'un des intérêts des cases classes est son 
+*
+*  Enfin, en plus de rendre le code plus concis, l'un des intérêts des cases classes est son
 *  utilisation lors du Pattern Matching (notion que l'on verra plus tard).
-*/ 
+*/
 class e2_case_classes extends HandsOnSuiteP1{
   /**
   * Création d'une instance d'une case class

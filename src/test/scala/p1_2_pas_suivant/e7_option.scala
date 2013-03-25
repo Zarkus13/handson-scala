@@ -3,20 +3,20 @@ package p1_2_pas_suivant
 import p1_1_premiers_pas.HandsOnSuiteP1
 
 /**
-*   Une Option comme sont nom l’indique représente une valeur optionnelle. 
-*   Une instance de Option est soit une instance de Some soit de None 
+*   Une Option comme sont nom l’indique représente une valeur optionnelle.
+*   Une instance de Option est soit une instance de Some soit de None
 *   (None dans le cas où il n’y a aucune valeur).
 *
 *   Exemple :
-*   Imaginons que l’on veuille trouver une personne dans une BDD. Elle n’existe peut-être pas. 
+*   Imaginons que l’on veuille trouver une personne dans une BDD. Elle n’existe peut-être pas.
 *   Dans ce cas en Scala on écrira :
 *
 *       def findPerson(key: Int): Option[Person]
 *
 *   Ca permet de dire que si la personne n’est pas trouvée, alors on renvoie None et non un 'null'
 *   comme dans d’autres langages.
-*   Le type Option permet donc de traiter des cas pour lesquels aucun résultat n’existe, 
-*   et de se prémunir des NPE/absence de valeur.
+*   Le type Option permet donc de traiter des cas pour lesquels aucun résultat n’existe,
+*   et de se prémunir des NullPointerException/absence de valeur.
 *
 *   Quelques liens :
 *     - http://www.scala-lang.org/api/current/index.html#scala.Option
@@ -32,7 +32,7 @@ class e7_option extends HandsOnSuiteP1 {
 
   test("None est identique à None") {
     val a = None
-    // ici ed dénote le fait d'être identique, et == l'égalité
+    // ici on dénote le fait d’être identique, et == l’égalité
     a should be(__)
   }
 
@@ -49,25 +49,25 @@ class e7_option extends HandsOnSuiteP1 {
     None.isEmpty should be(__)
   }
 
-  test("On ne peut pas caster None en n'importe quel objet") {
+  test("On ne peut pas cast None en n’importe quel objet") {
     intercept[ClassCastException] {
       assert(None.asInstanceOf[String].getClass === classOf[String])
     }
   }
 
-  test("None peut être utilisé avec le type Option, plutôt qu'avec null") {
+  test("None peut être utilisé avec le type Option, plutôt qu’avec null") {
     val optional: Option[String] = None
     optional.isEmpty should be(__)
     optional should be(__)
   }
 
-  test("Some est l'opposé de None pour le type Option") {
+  test("Some est l’opposé de None pour le type Option") {
     val optional: Option[String] = Some("Some Value")
     (optional == None) should be(__)
     optional.isEmpty should be(__)
   }
 
-  test("Option.getOrElse can be used to provide a default in the case of None") {
+  test("Option.getOrElse peut être utilisé pour obtenir une valeur par défaut dans le cas de None") {
     val optional: Option[String] = Some("Some Value")
     val optional2: Option[String] = None
     optional.getOrElse("No Value") should be(__)

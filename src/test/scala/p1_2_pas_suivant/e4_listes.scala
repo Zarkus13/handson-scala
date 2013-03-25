@@ -5,21 +5,21 @@ import p1_1_premiers_pas.HandsOnSuiteP1
   /**
   *   On passe aux Listes...
   *
-  *   Le point d’entrée des collections en Scala est le trait Iterable. 
-  *   Les fonctions dite d’ordre supérieur (map, filter, foreach...) que l'on verra par la suite 
+  *   Le point d’entrée des collections en Scala est le trait Iterable.
+  *   Les fonctions dite d’ordre supérieur (map, filter, foreach...) que l’on verra par la suite
   *   sont applicables aux classes de l’API Collections.
-  *   Les collections sont par défaut immuables, mais il est possible en le précisant d'utiliser 
-  *   leur forme muable. 
-  *   En fait en Scala, on vous encourage toujours à utiliser l'immutabilité (Scala a été codé 
-  *   dans un soucis de thread-safe).
-  *    
-  *   Une Liste contenant les éléments x1,…, xn est notée List(x1,…, xn).
+  *   Les collections sont par défaut immuables, mais il est possible en le précisant d’utiliser
+  *   leur forme mutable.
+  *   En fait en Scala, on vous encourage toujours à utiliser l’immutabilité (Scala a été codé
+  *   dans un soucis de thread-safety).
   *
-  *   La classe List repose sur les deux case classes Nil (où Nil représente une liste vide) 
-  *   et :: (pour info :: se prononce “cons”), où x::xs représente la liste dont le premier 
-  *   élément est x, suivi du reste des éléments xs.
-  *   Les Listes ont une structure récursive, et leurs éléments doivent tous être du même type. 
-  *   
+  *   Une Liste contenant les éléments x1, … , xn est notée List(x1, … , xn).
+  *
+  *   La classe List repose sur les deux case classes Nil (où Nil représente une liste vide)
+  *   et :: (pour info :: se prononce “cons”), où x::xs représente la liste dont le premier
+  *   élément est x, suivi d’une autre liste avec le reste des éléments xs.
+  *   Les Listes ont une structure récursive, et leurs éléments doivent tous être du même type.
+  *
   *   Enfin les Listes disposent d’un ensemble de fonctions assez riches (isEmpty, filter, head, tail...)
   *
   *   ça peut servir : http://www.scala-lang.org/api/current/index.html#scala.collection.immutable.List
@@ -41,9 +41,9 @@ class e4_listes extends HandsOnSuiteP1{
   }
 
   /**
-  *   Attention, on a vu cet exemple dans l'exo 2 sur les cases classes !
+  *   Attention, on a vu cet exemple dans l’exo 2 sur les cases classes !
   */
-  test("Eq teste l'égalité d'objet") {
+  test("Eq teste l’égalité d’objets") {
     val a = List(1, 2, 3)
     val b = List(1, 2, 3)
 
@@ -56,13 +56,13 @@ class e4_listes extends HandsOnSuiteP1{
   test("Les fonctions head et tail") {
     val a = List(1, 3, 5, 7, 9)
 
-    // accès à l'élément 2 de la liste
+    // accès à l’élément 2 de la liste
     a(2) should equal(__)
     // ça prend la tête...
     a.head should equal(__)
     // ah non ça prend tout, sauf la tête
     a.tail should equal(__)
-    // longeur de la liste
+    // longueur de la liste
     a.length should equal(__)
     // inverse de la liste
     a.reverse should equal(__)
@@ -70,8 +70,8 @@ class e4_listes extends HandsOnSuiteP1{
     a.toString should equal(__)
 
     // multiplie par 3 chaque élément de la liste
-    // La fonction map permet de faire une opération sur chaque élément d'une collection.
-    // De plus, map renvoie une copie de la collection appelante en appliquant la fonction 
+    // La fonction map permet de faire une opération sur chaque élément d’une collection.
+    // De plus, map renvoie une copie de la collection appelante en appliquant la fonction
     // f passée en paramètre à chaque élément.
     a.map {v => v * 3} should equal(__)
 
@@ -81,15 +81,16 @@ class e4_listes extends HandsOnSuiteP1{
     // conserve tous les multiple de 3
     val c = List(1, 2, 5, 8, 9)
     val b = c.filterNot(v => v == 5)
-    c should equal(List(1, 2, 5, 8, 9)) // les listes sont immutables par défaut !
-    b should equal(__) 
+    c should equal(List(1, 2, 5, 8, 9)) // les listes sont immuables par défaut !
+    b should equal(__)
   }
 
   /**
-  *   L'utilisation de "_" qui désigne tout ce qui n'a pas beson d'être nommé
+  *   L’utilisation de "_" qui désigne tout ce qui n’a pas besoin d’être nommé
   */
   test("Les fonctions appliquées aux listes peuvent utiliser '_' ") {
     val a = List(1, 2, 3)
+    //ici _ * 2 veut dire i => i * 2
     a.map(_ * 2) should equal(__)
     a.filter(_ % 2 != 0) should equal(__)
   }

@@ -5,14 +5,14 @@ package p1_1_premiers_pas
 */
 
 /**
-*  Les val et var sont des mots-clé utilisés en Scala pour déclarer des champs. 
-*  On peut rajouter le mot-clé 'private' devant pour définir des champs privés. 
+*  Les val et var sont des mots-clé utilisés en Scala pour déclarer des champs.
+*  On peut rajouter le mot-clé 'private' devant pour définir des champs privés.
 *  Si rien n'est spécifié, on est par défaut en 'public' en Scala.
-* 
-*     - var : permet de déclarer une variable muable (=que l'on pourra par la suite modifier si on le veut)
+*
+*     - var : permet de déclarer une variable mutable (=que l'on pourra par la suite modifier si on le veut)
 *
 *     - val : permet de déclarer une variable immuable (=que l'on ne pourra plus modifier une fois initialisée)
-*/ 
+*/
 class e0_vars_vals extends HandsOnSuiteP1 {
 
   test("Les vars peuvent être réaffectées") {

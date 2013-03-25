@@ -4,11 +4,11 @@ import p1_1_premiers_pas.HandsOnSuiteP1
 
 /**
 *   Un Set est une collection qui ne contient que des éléments distincts, comme en Java.
-*   
+*
 *   Quelques liens :
 *     - http://www.scala-lang.org/api/current/index.html#scala.collection.immutable.Set
 *     - http://docs.scala-lang.org/overviews/collections/sets.html
-*/ 
+*/
 
 class e6_sets extends HandsOnSuiteP1 {
 
@@ -39,7 +39,7 @@ class e6_sets extends HandsOnSuiteP1 {
     // la méthode contains
     aNewSetBis.contains("Nord") should be(__)
 
-    // suppression multiple
+    // suppressions multiples
     val myOtherSet = Set("Sud", "Est", "Ouest", "Nord")
     val aNewOtherSet = mySet -- List("Ouest", "Nord")
 
@@ -73,11 +73,11 @@ class e6_sets extends HandsOnSuiteP1 {
   test("L'union/intersection de deux Sets") {
     val mySet1 = Set("Nord", "Sud-Est", "Nord-Ouest", "Est")
     val mySet2 = Set("Est", "Sud", "Nord")
-    val aNewSet1 = mySet1 union mySet2 // à la place de "union" on peut utiliser l'opérateur "|" 
+    val aNewSet1 = mySet1 union mySet2 // à la place de "union" on peut utiliser l'opérateur "|"
 
     aNewSet1.equals(Set("Nord", "Sud-Est", "Sud", "Nord-Ouest", "Est")) should be(__)
 
-    val aNewSet2 = mySet1 intersect mySet2  // à la place de "intersect" on peut utiliser l'opérateur "&" 
+    val aNewSet2 = mySet1 intersect mySet2  // à la place de "intersect" on peut utiliser l'opérateur "&"
 
     aNewSet2.equals(Set("Est", "Nord")) should be(__)
   }
@@ -88,10 +88,10 @@ class e6_sets extends HandsOnSuiteP1 {
   test("Différence de deux Sets") {
     val mySet1 = Set("Nord", "Sud", "Est", "Ouest")
     val mySet2 = Set("Nord", "Est")
-    val aNewSet = mySet1 diff mySet2 // Note: you can use the "&~" operator if you *really* want to.
+    val aNewSet = mySet1 diff mySet2 // Note: vous pouvez utiliser l’opérateur "&~" si vous le voulez *vraiment*.
 
     aNewSet.equals(Set("Sud", "Ouest")) should be(__)
-  } 
+  }
 
   /**
   * Itérateur sur un set
