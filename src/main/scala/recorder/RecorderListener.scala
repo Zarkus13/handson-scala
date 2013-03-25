@@ -18,3 +18,15 @@ trait RecorderListener[T] {
   def expressionRecorded(recordedExpr: RecordedExpression[T]) {}
   def recordingCompleted(recording: Recording[T]) {}
 }
+
+
+
+class TestRecorderListener extends RecorderListener[Any] {
+  var exp: Option[RecordedExpression[Any]] = None
+
+  override def expressionRecorded(recordedExpr: RecordedExpression[Any]) {
+    exp = Some(recordedExpr)
+  }
+
+
+}
