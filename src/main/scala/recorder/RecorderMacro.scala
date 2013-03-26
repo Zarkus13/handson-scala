@@ -17,29 +17,32 @@ class RecorderMacro[C <: Context](val context: C) {
     reify(
       suite.splice.testPublic(testName.splice)({
 
-        lazy val testSourceFile:Array[String] =  {
+        lazy val testSourceFile:Array[(String,Int)] =  {
 
           val content:Array[String] = context.literal(texts._1).splice.split(RecorderMacro.lineSep)
 
           MyFunSuite.sourceProcessor(content)
         }
 
+        //lazy val fileTotalNumberLine = testSourceFile.size
+
         val testExpressionLineStart:Int = context.literal(texts._2).splice
 
         val testExpressionLineEnd:Int  = context.literal(texts._3).splice
 
 
-        lazy val ctx:String = {
-          testSourceFile.drop(testExpressionLineStart).take(testExpressionLineEnd - testExpressionLineStart).mkString("\n")
+        def ctx(errorLine:Int):String = {
+          MyFunSuite.prettyShow(testSourceFile.drop(testExpressionLineStart - 1).take(testExpressionLineEnd - testExpressionLineStart + 2), errorLine).mkString("\n")
         }
-
         def errorCtx(errorLine:Int):String = {
-          testSourceFile.drop(errorLine - 2 ).take(3).mkString("\n")
+          MyFunSuite.prettyShow(testSourceFile.drop(errorLine - 2 ).take(3), errorLine).mkString("\n")
         }
 
         def completeContext(errorLine:Option[Int]):String =  {
-            errorLine.map(i => errorCtx(i) + "\n...\n").getOrElse("") + ctx
+            errorLine.map(i => errorCtx(i) + "\n     ...\n" + ctx(i)).getOrElse("")
         }
+
+        val suitePackage = suite.splice.getClass.getPackage.toString
 
         try {
           testFun.splice
@@ -47,10 +50,12 @@ class RecorderMacro[C <: Context](val context: C) {
           case e: TestFailedException => {
             val mes = Option(e.getMessage).getOrElse("")
 
-            val failedCtx = completeContext(e.failedCodeLineNumber)
 
-            val location = e.failedCodeFileNameAndLineNumberString.map( suite.splice.getClass.getPackage.getName + java.io.File.separator + _ )
-            throw new MyTestFailedException(mes, Some(failedCtx), e, location)
+
+            val failedCtx = e.failedCodeLineNumber.map(ctx) //completeContext(e.failedCodeLineNumber)
+
+            val location = e.failedCodeFileNameAndLineNumberString.map( suitePackage + java.io.File.separator + _ )
+            throw new MyTestFailedException(mes, failedCtx, e, location)
 
           }
           case e: NotImplementedError => {
@@ -61,21 +66,34 @@ class RecorderMacro[C <: Context](val context: C) {
             mes match {
               case "__" =>
                 val notimpl = e.getStackTrace()(2)
-                val location = suite.splice.getClass.getPackage.getName + java.io.File.separator + notimpl.getFileName + ":" + notimpl.getLineNumber
-                throw new MyTestPendingException(mes, Some(completeContext(Some(notimpl.getLineNumber))), e, Some(location))
+                val location = suitePackage + java.io.File.separator + notimpl.getFileName + ":" + notimpl.getLineNumber
+                throw new MyTestPendingException(mes,
+                    //Some("     ...\n" + completeContext(Some(notimpl.getLineNumber)))
+                    Some(ctx(notimpl.getLineNumber))
+                    , e, Some(location))
               case _ =>
                 val notimpl = e.getStackTrace()(1)
-                val location = suite.splice.getClass.getPackage.getName + java.io.File.separator + notimpl.getFileName + ":" + notimpl.getLineNumber
-                throw new MyNotImplException(mes, None, e, Some(location))
+                val secondLocation = e.getStackTrace()(2).getLineNumber
+                val location = suitePackage + java.io.File.separator + notimpl.getFileName + ":" + notimpl.getLineNumber
+                throw new MyNotImplException(mes, Some("\n     ...\n" + errorCtx(notimpl.getLineNumber)  + "\n     ...\n" + ctx(secondLocation)), e, Some(location))
             }
           }
           case e: Throwable => {
 
-            val ctx = e.getStackTrace.take(7).mkString("\n") //context.literal(getTexts(testFun.tree)).splice
-            val firstStackTrace = e.getStackTrace()(0)
-            val location = suite.splice.getClass.getPackage.getName + java.io.File.separator + firstStackTrace.getFileName + ":" + firstStackTrace.getLineNumber
-            val mes = e.toString + "\n    at " + location // Option(e.getMessage).getOrElse("")
-            throw new MyException(mes, Some(ctx), e, Some(location))
+            //val ctx = e.getStackTrace.take(7).mkString("\n") //context.literal(getTexts(testFun.tree)).splice
+            //val firstStackTrace = e.getStackTrace()(0)
+
+            val firstGoodStackTrace = e.getStackTrace.find(
+              st => st.getClassName.contains(suite.splice.getClass.getName)
+              )
+
+            val location = firstGoodStackTrace.map( st => suitePackage + java.io.File.separator + st.getFileName + ":" + st.getLineNumber )
+            val failContext = firstGoodStackTrace.map( st => ctx(st.getLineNumber)+"\n\n" )
+            val myctx = failContext.getOrElse("") + e.getStackTrace.take(7).mkString("\n")
+            //val myctx = e.getStackTrace.take(7).mkString("\n")
+            //val location = suitePackage + java.io.File.separator + firstStackTrace.getFileName + ":" + firstStackTrace.getLineNumber
+            val mes = e.toString + location.map("\n    at " + _) // Option(e.getMessage).getOrElse("")
+            throw new MyException(mes, Some(myctx), e, location)
 
           }
         }
