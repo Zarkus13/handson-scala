@@ -11,9 +11,9 @@ class testJson extends HandsOnSuite {
     val jsonObject=JsObject(Map("string"->jsonString, "number"->jsonNumber, "seq"->jsonSequece))
 
     val expected:String="""{
-      |  string:"json",
-      |  number:10,
-      |  seq:["a","b","c"]
+      |  "string":"json",
+      |  "number":10,
+      |  "seq":["a","b","c"]
       |}""".stripMargin
 
     val actual=jsonObject.toString()
@@ -52,7 +52,7 @@ class testJson extends HandsOnSuite {
   }
 }
 package client {
-  case class User(name:String,age:Double,friends:Seq[String])
+  case class User(name:String,age:Int,friends:Seq[String])
 
   object User{
     implicit val userWrite:Writer[User] = Writer { u:User => ??? }
@@ -61,9 +61,9 @@ package client {
   import User.userWrite
   class testJsonClient extends HandsOnSuite {
     exercice("toJson should correctly convert a user"){
-      val user = User("theString", 42, Seq("a","b","c"))
+      val user = User("Mathieu", 25, Seq("Jean","Jon","Ludwine"))
 
-      val expected=JsObject(Map("string"->JsString("theString"), "number"->JsNumber(42), "seq"->JsSeq(Seq(JsString("a"),JsString("b"),JsString("c")))))
+      val expected=JsObject(Map("name"->JsString("Mathieu"), "age"->JsNumber(25), "friends"->JsSeq(Seq(JsString("Jean"),JsString("Jon"),JsString("Ludwine")))))
       val actual=Json.toJson(user)
 
       actual should equal(expected)

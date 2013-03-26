@@ -24,8 +24,9 @@ class e5_maps extends HandsOnSuiteP1 {
     val myMapBis = Map("BE" -> "Besançon", "BL" -> "Belfort", "PA" -> "Paris")
     myMap.equals(myMapBis) should be(__)
     // impact des 'doublons'
-    val myOtherMap = Map("PA" -> "Paris", "BE" -> "Besançon", "PA" -> "Paris")
+    val myOtherMap = Map("PA" -> "Paris", "BE" -> "Besançon", "PA" -> "Palo Alto")
     myOtherMap.size should be(__)
+    myOtherMap("PA") should be(__)
   }
 
   /**

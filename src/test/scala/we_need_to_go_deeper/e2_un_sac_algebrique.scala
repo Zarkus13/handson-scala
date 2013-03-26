@@ -62,7 +62,7 @@ class e2_un_sac_algebrique extends HandsOnSuite {
   exercice("toujours comme avant, je peux construire mon Sac")  {
     val s0 = Sac(0)    // appel de la fonction apply dans l'objet companion de Sac
                                          // un peu comme List(1,2,3)
-    assert(false)
+
   }
 
   exercice("toujours comme avant, je peux appliquer une fonction à l'intérieur") {

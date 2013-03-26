@@ -36,6 +36,7 @@ class e2_case_classes extends HandsOnSuiteP1{
     (d1 == d3) should be(__)
     (d1 == d2) should be(__)
     (d2 == d3) should be(__)
+    (d2 == d4) should be(__)
   }
 
   /**

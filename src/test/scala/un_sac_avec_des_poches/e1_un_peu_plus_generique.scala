@@ -8,7 +8,9 @@ class e1_un_peu_plus_generique  extends  HandsOnSuite {
 
     def map[B](fonction: A => B):Sac[B] = ???
 
-    def flatMap[B](fonction: A => Sac[B]):Sac[B] = ???
+    def flatMap[B](fonction: A => Sac[B]):Sac[B] = {
+      ???
+    }
 
   }
 

@@ -43,7 +43,7 @@ class e4_listes extends HandsOnSuiteP1{
   /**
   *   Attention, on a vu cet exemple dans l’exo 2 sur les cases classes !
   */
-  exercice("Eq teste l’égalité d’objets") {
+  exercice("Eq teste l’égalité des références d’objets") {
     val a = List(1, 2, 3)
     val b = List(1, 2, 3)
 

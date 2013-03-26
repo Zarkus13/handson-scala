@@ -93,6 +93,8 @@ class e0_une_mise_en_abime /* ou un sac de sac */ extends HandsOnSuite {
 
     val monPetitSacDeZero = Sac(0, Set("un portable") )
 
+    // ici on a rajouté .asInstanceOf[Int]
+    // pour des soucis de compilation, il faudra donc remplacer «__.asInstanceOf[Int]»
     val monPetitSacDeUn  = (for (i <- monPetitSacDeZero) yield (i + __.asInstanceOf[Int]))
 
     /*

@@ -6,7 +6,10 @@ import support.HandsOnSuite
 
 class e0_list extends HandsOnSuite {
 
-
+  /*
+  * Ici on va définir une liste de manière récursive, comme une liste chainée
+  * Ainsi, une liste est soit la liste vide, soit un élément suivi d'une autre liste
+  */
   sealed trait List[+A] {
 
     def map[B](fonction:A => B):List[B]
