@@ -1,11 +1,11 @@
-package p4_bonus_event_sourcing
+package bonus_event_sourcing
 
 import support.HandsOnSuite
-import p4_bonus_event_sourcing.model.Posts
-import p4_bonus_event_sourcing.events._
-import p4_bonus_event_sourcing.events.PostEdited
-import p4_bonus_event_sourcing.events.PostContent
-import p4_bonus_event_sourcing.events.PostAdded
+import bonus_event_sourcing.model.Posts
+import bonus_event_sourcing.events._
+import bonus_event_sourcing.events.PostEdited
+import bonus_event_sourcing.events.PostContent
+import bonus_event_sourcing.events.PostAdded
 
 
 class testEventSourcing extends HandsOnSuite {
@@ -24,7 +24,7 @@ class testEventSourcing extends HandsOnSuite {
 
 
 
-  test("Ajout de post") {
+  exercice("Ajout de post") {
 
     val postId = PostId.generate()
 
@@ -36,7 +36,7 @@ class testEventSourcing extends HandsOnSuite {
 
   }
 
-  test("modification de post") {
+  exercice("modification de post") {
 
     val postId = PostId.generate()
 
@@ -49,7 +49,7 @@ class testEventSourcing extends HandsOnSuite {
     post.get.content should be(articleUnPeuPlusSérieux)
   }
 
-  test("suppression d'un post") {
+  exercice("suppression d'un post") {
 
     val postId = PostId.generate()
 
@@ -61,7 +61,7 @@ class testEventSourcing extends HandsOnSuite {
 
   }
 
-  test("versionning") {
+  exercice("versionning") {
 
     /* ....*/
 

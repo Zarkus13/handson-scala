@@ -1,6 +1,6 @@
-package p1_2_pas_suivant
+package pas_suivant
 
-import p1_1_premiers_pas.HandsOnSuiteP1
+import premiers_pas.HandsOnSuiteP1
 
   /**
   *   On passe aux Listes...
@@ -30,7 +30,7 @@ class e4_listes extends HandsOnSuiteP1{
   /**
   *   Nil est et restera la liste vide quelque soit le typage de la liste !
   */
-  test("Les listes Nil, quelque soit leur type sont identiques") {
+  exercice("Les listes Nil, quelque soit leur type sont identiques") {
     val a: List[String] = Nil // Nil est la classe qui représente une liste vide
     val b: List[Int] = Nil // et oui en Scala tout est OBJET !
 
@@ -43,7 +43,7 @@ class e4_listes extends HandsOnSuiteP1{
   /**
   *   Attention, on a vu cet exemple dans l’exo 2 sur les cases classes !
   */
-  test("Eq teste l’égalité d’objets") {
+  exercice("Eq teste l’égalité d’objets") {
     val a = List(1, 2, 3)
     val b = List(1, 2, 3)
 
@@ -53,7 +53,7 @@ class e4_listes extends HandsOnSuiteP1{
   /**
   *  Quelques méthodes utiles à retenir...
   */
-  test("Les fonctions head et tail") {
+  exercice("Les fonctions head et tail") {
     val a = List(1, 3, 5, 7, 9)
 
     // accès à l’élément 2 de la liste
@@ -88,7 +88,7 @@ class e4_listes extends HandsOnSuiteP1{
   /**
   *   L’utilisation de "_" qui désigne tout ce qui n’a pas besoin d’être nommé
   */
-  test("Les fonctions appliquées aux listes peuvent utiliser '_' ") {
+  exercice("Les fonctions appliquées aux listes peuvent utiliser '_' ") {
     val a = List(1, 2, 3)
     //ici _ * 2 veut dire i => i * 2
     a.map(_ * 2) should equal(__)

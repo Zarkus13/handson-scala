@@ -1,6 +1,6 @@
-package p1_2_pas_suivant
+package pas_suivant
 
-import p1_1_premiers_pas.HandsOnSuiteP1
+import premiers_pas.HandsOnSuiteP1
 
 /**
 *   Un Set est une collection qui ne contient que des éléments distincts, comme en Java.
@@ -15,7 +15,7 @@ class e6_sets extends HandsOnSuiteP1 {
   /**
   * Création d'un Set
   */
-  test("Création d'un Set") {
+  exercice("Création d'un Set") {
     val mySet = Set("Sud", "Est", "Ouest", "Nord")
     mySet.size should be(__)
 
@@ -26,7 +26,7 @@ class e6_sets extends HandsOnSuiteP1 {
   /**
   * Quelques opérations : les fonctions +, -, --  et contains
   */
-  test("Opérations sur les Sets") {
+  exercice("Opérations sur les Sets") {
     // addition
     val mySet = Set("Sud", "Est", "Sud")
     val aNewSet = mySet + "Nord"
@@ -50,7 +50,7 @@ class e6_sets extends HandsOnSuiteP1 {
   /**
   * Les types de clé
   */
-  test("On peut mixer les types") {
+  exercice("On peut mixer les types") {
     val mySet = Set("Sud", "Nord", 12)
 
     mySet.contains(12) should be(__)
@@ -60,7 +60,7 @@ class e6_sets extends HandsOnSuiteP1 {
   /**
   *  Accesseur de Sets
   */
-  test("Accesseur") {
+  exercice("Accesseur") {
     val mySet = Set("Nord", "Sud", 12)
 
     mySet(12) should be(__)
@@ -70,7 +70,7 @@ class e6_sets extends HandsOnSuiteP1 {
   /**
   * Union et Intersection de Sets
   */
-  test("L'union/intersection de deux Sets") {
+  exercice("L'union/intersection de deux Sets") {
     val mySet1 = Set("Nord", "Sud-Est", "Nord-Ouest", "Est")
     val mySet2 = Set("Est", "Sud", "Nord")
     val aNewSet1 = mySet1 union mySet2 // à la place de "union" on peut utiliser l'opérateur "|"
@@ -85,7 +85,7 @@ class e6_sets extends HandsOnSuiteP1 {
   /**
   *  La différence de deux Sets avec la méthode diff
   */
-  test("Différence de deux Sets") {
+  exercice("Différence de deux Sets") {
     val mySet1 = Set("Nord", "Sud", "Est", "Ouest")
     val mySet2 = Set("Nord", "Est")
     val aNewSet = mySet1 diff mySet2 // Note: vous pouvez utiliser l’opérateur "&~" si vous le voulez *vraiment*.
@@ -96,7 +96,7 @@ class e6_sets extends HandsOnSuiteP1 {
   /**
   * Itérateur sur un set
   */
-  test("L'iterator") {
+  exercice("L'iterator") {
     val mySet = Set(1, 3, 4, 9)
     var sum = 0
     for (i <- mySet)
@@ -108,7 +108,7 @@ class e6_sets extends HandsOnSuiteP1 {
   /**
   * L'ordre des éléments d'un Set n'est pas important pour equals
   */
-  test("Equals est indépendant de l'ordre") {
+  exercice("Equals est indépendant de l'ordre") {
     val mySet1 = Set("Nord", "Sud", "Ouest", "Est")
     val mySet2 = Set("Ouest", "Sud", "Est", "Nord")
 

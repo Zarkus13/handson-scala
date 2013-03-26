@@ -1,8 +1,8 @@
-package p2_we_need_to_go_deeper
+package we_need_to_go_deeper
 
 import support.HandsOnSuite
 
-class e4_on_a_besoin_de_la_covariance extends HandsOnSuite {
+class e3_un_sac_covariant extends HandsOnSuite {
 
   /**
    *
@@ -23,8 +23,6 @@ class e4_on_a_besoin_de_la_covariance extends HandsOnSuite {
    */
   sealed trait Sac[+A] {
 
-    def tagDeSac:Set[String]
-
     def map[B](fonction:A => B):Sac[B]
 
     def flatMap[B](fonction:A => Sac[B]):Sac[B]
@@ -35,15 +33,13 @@ class e4_on_a_besoin_de_la_covariance extends HandsOnSuite {
 
     def isEmpty:Boolean
 
-    def addTags(tag:Set[String]):Sac[A]
-
   }
 
   object Sac {
-    def apply[A](contenu:A, tagDeSac:Set[String] = Set.empty):Sac[A] = SacPlein(contenu, tagDeSac)
+    def apply[A](contenu:A):Sac[A] = SacPlein(contenu)
   }
 
-  case class SacVide(tagDeSac:Set[String] = Set.empty) extends Sac[Nothing] {
+  case object SacVide extends Sac[Nothing] {
 
     type A = Nothing
 
@@ -57,11 +53,9 @@ class e4_on_a_besoin_de_la_covariance extends HandsOnSuite {
 
     override val isEmpty: Boolean = true
 
-    def addTags(tag:Set[String]):Sac[A] = ???
-
   }
 
-  case class SacPlein[A](contenu:A , tagDeSac:Set[String] = Set.empty) extends Sac[A] {
+  case class SacPlein[A](contenu:A) extends Sac[A] {
 
     override def map[B](fonction:A => B):Sac[B]  = ???
 
@@ -73,29 +67,14 @@ class e4_on_a_besoin_de_la_covariance extends HandsOnSuite {
 
     override val isEmpty: Boolean = false
 
-    def addTags(tag:Set[String]):Sac[A] = ???
-
   }
 
 
-  test("on peut ajouter des tags au sac") {
-
-    val s0 = Sac(0)
-
-    s0.addTags(Set("petit sac")).tagDeSac should be(Set("petit sac"))
-
-    val v0 = SacVide()
-
-    v0.addTags(Set("petit sac")).tagDeSac should be(Set("petit sac"))
-
-  }
-
-
-  test("Un peu comme avant, l'application de fonction dans le conteneur") {
-    val petitSacDeZero = Sac(0,Set("petit sac"))
+  exercice("Un peu comme avant, l'application de fonction dans le conteneur") {
+    val petitSacDeZero = Sac(0)
 
     petitSacDeZero.map(x => x + 1) match {
-      case SacPlein(contenu, _ )  =>  contenu should be(1)
+      case SacPlein(contenu)  =>  contenu should be(1)
 
       case _ => fail("cela ne doit pas être un sac vide")
     }
@@ -105,25 +84,24 @@ class e4_on_a_besoin_de_la_covariance extends HandsOnSuite {
 
 
 
-  test("La combinaison de Sac") {
+  exercice("La combinaison de Sac") {
 
-    val petitSacDeZero = Sac(0,Set("petit sac"))
+    val petitSacDeZero = Sac(0)
 
-    val grandSacDeA = Sac("A", Set("grand sac"))
+    val grandSacDeA = Sac("A")
 
     val combinaison = for (p <- petitSacDeZero; g <- grandSacDeA) yield { p.toString + g}
 
     combinaison match {
-      case SacPlein(contenu, tagDeSac) => {
+      case SacPlein(contenu) => {
         contenu should be("0A")
-        combinaison.tagDeSac should be(Set("petit sac", "grand sac"))
       }
       case _ => fail("cela ne doit pas être un sac vide")
     }
   }
 
-  test("Le filtrage") {
-    val petitSacDeZero = Sac(0,Set("petit sac"))
+  exercice("Le filtrage") {
+    val petitSacDeZero = Sac(0)
 
     assert(petitSacDeZero.filter(x => x > 1).isEmpty)
   }

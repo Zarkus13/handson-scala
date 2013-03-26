@@ -1,6 +1,6 @@
-package p1_2_pas_suivant
+package pas_suivant
 
-import p1_1_premiers_pas.HandsOnSuiteP1
+import premiers_pas.HandsOnSuiteP1
 
 /**
 * On passe aux patterns et au pattern matching
@@ -15,7 +15,7 @@ class e9_extracteurs_et_patterns extends HandsOnSuiteP1 {
   * Un objet compagnon est un singleton portant le même nom que la classe,
   * et peut être considéré comme une boite à outils statiques d’une classe.
   */
-  test("Un extracteur est le contraire d’un constructeur") {
+  exercice("Un extracteur est le contraire d’un constructeur") {
 
     class Email(val value:String)
     object Email { def unapply(email:Email):Option[String]=Option(email.value)}
@@ -30,7 +30,7 @@ class e9_extracteurs_et_patterns extends HandsOnSuiteP1 {
  /**
   * Les extracteurs fonctionnent avec plusieurs valeurs
   */
-  test("les extracteurs fonctionnent aussi avec plusieurs valeurs") {
+  exercice("les extracteurs fonctionnent aussi avec plusieurs valeurs") {
     class Email(val value:String, val spamRatio:Integer)
     object Email {
       def unapply(email:Email):Option[(String,Integer)]=Option((email.value,email.spamRatio))
@@ -49,7 +49,7 @@ class e9_extracteurs_et_patterns extends HandsOnSuiteP1 {
   * Créer une case classe définit automatiquement un extracteur
   * pour cette case classe
   */
-  test("Un extracteur est définit automatiquement pour toute case classe") {
+  exercice("Un extracteur est définit automatiquement pour toute case classe") {
     case class Email(val value:String)
 
     val mailstring="foo@bar.com"
@@ -62,7 +62,7 @@ class e9_extracteurs_et_patterns extends HandsOnSuiteP1 {
  /**
   * le pattern matching peut être utilisé sur des chaines
   */
-  test("le pattern matching peut être utilisé comme un switch/case") {
+  exercice("le pattern matching peut être utilisé comme un switch/case") {
     val string="B"
 
     val actual = "B" match {
@@ -87,7 +87,7 @@ class e9_extracteurs_et_patterns extends HandsOnSuiteP1 {
   /**
   * le pattern matching peut être utilisé sur des types
   */
-  test("le pattern matching peut être utilisé sur des types") {
+  exercice("le pattern matching peut être utilisé sur des types") {
     sealed trait Root
     class A(val a:String="A") extends Root
     class B(val b:String="B") extends Root
@@ -108,7 +108,7 @@ class e9_extracteurs_et_patterns extends HandsOnSuiteP1 {
   /**
   * le pattern matching peut être utilisé avec des extracteurs
   */
-  test("le pattern matching peut être utilisé avec des extracteurs") {
+  exercice("le pattern matching peut être utilisé avec des extracteurs") {
     case class A(val a:String="A")
     val a:A=new A(a="b")
 
@@ -122,7 +122,7 @@ class e9_extracteurs_et_patterns extends HandsOnSuiteP1 {
     (actual=="stringB") should be (__)
   }
 
-  test("le pattern matching peut être utilisé avec des extracteurs pour capturer des valeurs") {
+  exercice("le pattern matching peut être utilisé avec des extracteurs pour capturer des valeurs") {
     case class A(val a:String, val b:String)
 
     val a:A=new A(a="string", b="B")
@@ -135,7 +135,7 @@ class e9_extracteurs_et_patterns extends HandsOnSuiteP1 {
     (actual=="stringB") should be (__)
   }
 
-  test("Il n’est pas obligatoire de capturer toutes les valeurs") {
+  exercice("Il n’est pas obligatoire de capturer toutes les valeurs") {
     case class A(val a:String, val b:String)
     val a:A=new A(a="string", b="B")
 
@@ -147,7 +147,7 @@ class e9_extracteurs_et_patterns extends HandsOnSuiteP1 {
     (actual=="string") should be (__)
   }
 
-  test("You can nest patterns") {
+  exercice("You can nest patterns") {
     case class A(val a:String, val b:String)
     case class B(val a:A)
 
@@ -162,7 +162,7 @@ class e9_extracteurs_et_patterns extends HandsOnSuiteP1 {
     (actual=="B") should be (__)
   }
 
-  test("Les listes ont différents patterns") {
+  exercice("Les listes ont différents patterns") {
     val s=Seq("a","b")
     val actual = s match {
       case Seq("a","b") => "ok"
@@ -186,7 +186,7 @@ class e9_extracteurs_et_patterns extends HandsOnSuiteP1 {
     (lastActual=="a") should be (__)
   }
 
-  test("patterns are evaluated in declaration order") {
+  exercice("patterns are evaluated in declaration order") {
     val s=Seq("a","b")
     val actual = s match {
       case Seq("a","b") => "ok"

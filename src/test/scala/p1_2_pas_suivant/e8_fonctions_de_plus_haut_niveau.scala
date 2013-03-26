@@ -1,6 +1,6 @@
-package p1_2_pas_suivant
+package pas_suivant
 
-import p1_1_premiers_pas.HandsOnSuiteP1
+import premiers_pas.HandsOnSuiteP1
 
 /**
 *   Les fonctions de plus haut niveau.
@@ -31,7 +31,7 @@ class e8_fonctions_de_plus_haut_niveau extends HandsOnSuiteP1 {
   *     x: Int => x + 1
   *   }
   */
-  test("Une fonction anonyme comme variable") {
+  exercice("Une fonction anonyme comme variable") {
     val lambda = (x: Int) => x + 1
     def result = List(1, 2, 3) map lambda
     // le compilateur Scala fait de l’inférence de type donc on peut se passer de préciser le type
@@ -43,7 +43,7 @@ class e8_fonctions_de_plus_haut_niveau extends HandsOnSuiteP1 {
   * ça marche encore avec une 'vraie' fonction comme variable,
   * c’est justement une des particularité des fonctions de plus haut niveau
   */
-  test("Variable qui fait référence à une fonction") {
+  exercice("Variable qui fait référence à une fonction") {
     val lambda = new Function1[Int, Int] {
       def apply(v1: Int) = v1 + 1
     }
@@ -54,7 +54,7 @@ class e8_fonctions_de_plus_haut_niveau extends HandsOnSuiteP1 {
   /**
   * Avec une autre façon de définir la fonction lambda, passée en paramètre de map
   */
-  test("Encore une autre façon") {
+  exercice("Encore une autre façon") {
     val lambda = new (Int => Int) {
       def apply(v1: Int) = v1 + 1
     }
@@ -66,7 +66,7 @@ class e8_fonctions_de_plus_haut_niveau extends HandsOnSuiteP1 {
   /**
   * ou plus simplement
   */
-  test("simplement") {
+  exercice("simplement") {
     def result = List(1, 2, 3) map ( x => x + 1 )
     result should be(__)
 
@@ -79,7 +79,7 @@ class e8_fonctions_de_plus_haut_niveau extends HandsOnSuiteP1 {
   /**
   *  Les fonctions de plus haut niveau peuvent retourner des fonctions
   */
-  test("Fonction retournant une autre fonction") {
+  exercice("Fonction retournant une autre fonction") {
     def addWithoutSyntaxSugar(x: Int) = {
       new Function1[Int, Int]() {
         def apply(y: Int): Int = x + y
@@ -99,7 +99,7 @@ class e8_fonctions_de_plus_haut_niveau extends HandsOnSuiteP1 {
   /**
   * Les fonctions de plus haut niveau peuvent prendre une fonction en paramètre
   */
-  test("Fonction prenant en paramètre une autre fonction. ça aide dans la composition de fonctions") {
+  exercice("Fonction prenant en paramètre une autre fonction. ça aide dans la composition de fonctions") {
     def makeUpper(xs: List[String]) = xs map {
       _.toUpperCase
     }
@@ -121,7 +121,7 @@ class e8_fonctions_de_plus_haut_niveau extends HandsOnSuiteP1 {
   /**
   * La currification
   */
-  test("La currification est une technique qui permet de transformer une fonction avec des paramètres multiples en une fonction à un seul paramètre") {
+  exercice("La currification est une technique qui permet de transformer une fonction avec des paramètres multiples en une fonction à un seul paramètre") {
     def multiply(x: Int, y: Int) = x * y
     val multiplyCurried = (multiply _).curried
     multiply(4, 5) should be(__)
@@ -129,7 +129,7 @@ class e8_fonctions_de_plus_haut_niveau extends HandsOnSuiteP1 {
   }
 
 
-  test("La currification permet de créer des fonctions spécialisées") {
+  exercice("La currification permet de créer des fonctions spécialisées") {
     def customFilter(f: Int => Boolean)(xs: List[Int]) = {
       xs filter f
     }

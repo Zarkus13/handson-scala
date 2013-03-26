@@ -1,25 +1,25 @@
-package p5_type_classes
+package type_classes
 
 import support.HandsOnSuite
 import Implicits._
 
 class testJson extends HandsOnSuite {
   exercice("a Json tree should print itself"){
-		val jsonString=JsString("json")
-		val jsonNumber=JsNumber(int2Integer(10))
-		val jsonSequece=JsSeq(Seq(JsString("a"), JsString("b"), JsString("c")))
-		val jsonObject=JsObject(Map("string"->jsonString, "number"->jsonNumber, "seq"->jsonSequece))
+    val jsonString=JsString("json")
+    val jsonNumber=JsNumber(int2Integer(10))
+    val jsonSequece=JsSeq(Seq(JsString("a"), JsString("b"), JsString("c")))
+    val jsonObject=JsObject(Map("string"->jsonString, "number"->jsonNumber, "seq"->jsonSequece))
 
     val expected:String="""{
       |  string:"json",
-  	  |  number:10,
-  	  |  seq:["a","b","c"]
-			|}""".stripMargin
+      |  number:10,
+      |  seq:["a","b","c"]
+      |}""".stripMargin
 
-		val actual=jsonObject.toString()
+    val actual=jsonObject.toString()
 
-		actual should equal(expected)
-	}
+    actual should equal(expected)
+  }
   exercice("toJson should correctly convert a String"){
     val expected=JsString("json")
     val actual=Json.toJson("json")

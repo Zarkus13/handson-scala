@@ -1,6 +1,6 @@
-package p1_2_pas_suivant
+package pas_suivant
 
-import p1_1_premiers_pas.HandsOnSuiteP1
+import premiers_pas.HandsOnSuiteP1
 
 /**
 *   Une Option comme sont nom l’indique représente une valeur optionnelle.
@@ -26,48 +26,48 @@ class e7_option extends HandsOnSuiteP1 {
   /**
   * Quelques tests rapides
   */
-  test("None est égal à...None") {
+  exercice("None est égal à...None") {
    None should be(__)
   }
 
-  test("None est identique à None") {
+  exercice("None est identique à None") {
     val a = None
     // ici on dénote le fait d’être identique, et == l’égalité
     a should be(__)
   }
 
-  test("On peut convertir None en une String") {
+  exercice("On peut convertir None en une String") {
     None.toString should be(__)
   }
 
-  test("et en une liste aussi") {
+  /*exercice("et en une liste aussi") {
     val a = None
     a.toList should be(__)
-  }
+  }*/
 
-  test("None est considéré comme vide") {
+  exercice("None est considéré comme vide") {
     None.isEmpty should be(__)
   }
 
-  test("On ne peut pas cast None en n’importe quel objet") {
+  exercice("On ne peut pas cast None en n’importe quel objet") {
     intercept[ClassCastException] {
       assert(None.asInstanceOf[String].getClass === classOf[String])
     }
   }
 
-  test("None peut être utilisé avec le type Option, plutôt qu’avec null") {
+  exercice("None peut être utilisé avec le type Option, plutôt qu’avec null") {
     val optional: Option[String] = None
     optional.isEmpty should be(__)
     optional should be(__)
   }
 
-  test("Some est l’opposé de None pour le type Option") {
+  exercice("Some est l’opposé de None pour le type Option") {
     val optional: Option[String] = Some("Some Value")
     (optional == None) should be(__)
     optional.isEmpty should be(__)
   }
 
-  test("Option.getOrElse peut être utilisé pour obtenir une valeur par défaut dans le cas de None") {
+  exercice("Option.getOrElse peut être utilisé pour obtenir une valeur par défaut dans le cas de None") {
     val optional: Option[String] = Some("Some Value")
     val optional2: Option[String] = None
     optional.getOrElse("No Value") should be(__)

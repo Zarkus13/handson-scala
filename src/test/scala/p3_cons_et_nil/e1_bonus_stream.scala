@@ -1,4 +1,4 @@
-package p3_cons_et_nil
+package cons_et_nil
 
 import support.HandsOnSuite
 
@@ -54,7 +54,7 @@ class e1_bonus_stream extends HandsOnSuite {
     }
   }
   /**
-   * Cons veut dire Constructor, c'est lui qui permet de construire la Stream en ajoutant un élément 
+   * Cons veut dire Constructor, c'est lui qui permet de construire la Stream en ajoutant un élément
    * à la queue
    */
   final class Cons[A](val head:A, tl: => Stream[A]) extends  Stream[A] {
@@ -109,7 +109,7 @@ class e1_bonus_stream extends HandsOnSuite {
     def foreach(effetDeBord:A => Unit):Unit = {}
   }
 
-  test("création") {
+  exercice("création") {
 
     Stream() should be(EmptyStream)
 
@@ -117,12 +117,12 @@ class e1_bonus_stream extends HandsOnSuite {
 
   }
 
-  test("map") {
+  exercice("map") {
     Stream(1,2,3).map(x => x + 1) should be(Stream(2,3,4))
   }
 
 
-  test("union") {
+  exercice("union") {
 
     Stream(1,2,3).union(Stream(4,5)) should be(Stream(1,2,3,4,5))
 
@@ -136,7 +136,7 @@ class e1_bonus_stream extends HandsOnSuite {
 
   }
 
-  test("flatMap") {
+  exercice("flatMap") {
 
     val combinaison = for (a <- Stream("A","B"); i <- Stream(1,2)) yield (a + i)
 
@@ -144,14 +144,14 @@ class e1_bonus_stream extends HandsOnSuite {
 
   }
 
-  test("filter") {
+  exercice("filter") {
 
     Stream(1,2,3).filter(x => x > 1) should be(Stream(2,3))
 
     Stream(1,2,3).filter(x => false) should be(EmptyStream)
   }
 
-  test("lazyness") {
+  exercice("lazyness") {
 
     val s = Stream(1,2,3).map{
       case 1 => 1
@@ -165,7 +165,7 @@ class e1_bonus_stream extends HandsOnSuite {
 
   }
 
-  test("lazyness 2") {
+  exercice("lazyness 2") {
     val s:Stream[Int] = Stream(1,2,3).map{
       case 1 => 1
       case _ => {

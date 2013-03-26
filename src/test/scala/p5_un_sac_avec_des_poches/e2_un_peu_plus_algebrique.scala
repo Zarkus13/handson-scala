@@ -1,9 +1,9 @@
-package p2_we_need_to_go_deeper
+package un_sac_avec_des_items
 
 import support.HandsOnSuite
 
 
-class e3_un_peu_plus_algebrique extends HandsOnSuite {
+class e2_un_peu_plus_algebrique extends HandsOnSuite {
 
  /**
    * Un type algébrique (ici Sac) est un type composé ici par l'union disjointe de SacVide et SacPlein.
@@ -16,13 +16,13 @@ class e3_un_peu_plus_algebrique extends HandsOnSuite {
   *       Il est cependant possible d'implémenter des méthodes dans un trait.
   *
   *     - sealed est un mot clé utilisé devant un trait. Le compilateur ne regardera que les case classes
-  *       étendant le trait présent dans ce fichier source là, et si des cas manquent lors du Pattern 
+  *       étendant le trait présent dans ce fichier source là, et si des cas manquent lors du Pattern
   *       Matching, un warning est remonté.
-  * 
+  *
   */
   sealed trait Sac {
 
-    def tagDeSac:Set[String]
+    def items:Set[String]
 
     def map(fonction:Int => Int):Sac
 
@@ -30,17 +30,17 @@ class e3_un_peu_plus_algebrique extends HandsOnSuite {
 
     def filter(fonction:Int => Boolean):Sac
 
-    def contenuOuSinon(replacement:Int):Int
+    def valeurOuSinon(replacement:Int):Int
 
-    def addTags(tags:Set[String]):Sac
+    def addItems(items:Set[String]):Sac
 
   }
 
   object Sac {
-    def apply(contenu:Int, tagDeSac:Set[String] = Set.empty):Sac = SacPlein(contenu, tagDeSac)
+    def apply(valeur:Int, items:Set[String] = Set.empty):Sac = SacPlein(valeur, items)
   }
 
-  case class SacVide(tagDeSac:Set[String] = Set.empty) extends Sac {
+  case class SacVide(items:Set[String] = Set.empty) extends Sac {
 
     override def map(fonction:Int => Int):Sac = ???
 
@@ -48,12 +48,12 @@ class e3_un_peu_plus_algebrique extends HandsOnSuite {
 
     override def filter(fonction:Int => Boolean):Sac = ???
 
-    override def contenuOuSinon(replacement:Int):Int = replacement
+    override def valeurOuSinon(replacement:Int):Int = replacement
 
-    def addTags(tags: Set[String]): Sac = ???
+    def addItems(items: Set[String]): Sac = ???
   }
 
-  case class SacPlein(contenu:Int , tagDeSac:Set[String] = Set.empty) extends Sac {
+  case class SacPlein(valeur:Int , items:Set[String] = Set.empty) extends Sac {
 
     override def map(fonction:Int => Int):Sac = ???
 
@@ -61,40 +61,40 @@ class e3_un_peu_plus_algebrique extends HandsOnSuite {
 
     override def filter(fonction:Int => Boolean):Sac = ???
 
-    override def contenuOuSinon(replacement:Int):Int = contenu
+    override def valeurOuSinon(replacement:Int):Int = valeur
 
-    def addTags(tags: Set[String]): Sac = ???
+    def addItems(items: Set[String]): Sac = ???
   }
 
 
-  test("toujours comme avant, je peux construire mon Sac")  {
+  exercice("toujours comme avant, je peux construire mon Sac")  {
 
-    val s0 = Sac(0, Set("petit sac"))    // appel de la fonction apply dans l'objet companion de Sac
+    val s0 = Sac(0, Set("un portable"))    // appel de la fonction apply dans l'objet companion de Sac
                                          // un peu comme List(1,2,3)
 
   }
 
-  test("on peut ajouter des tags au sac") {
+  exercice("on peut ajouter des items au sac") {
 
     val s0 = Sac(0)
 
-    s0.addTags(Set("petit sac")).tagDeSac should be(Set("petit sac"))
+    s0.addItems(Set("un portable")).items should be(Set("un portable"))
 
     val v0 = SacVide()
 
-    v0.addTags(Set("petit sac")).tagDeSac should be(Set("petit sac"))
+    v0.addItems(Set("un portable")).items should be(Set("un portable"))
 
   }
 
 
-  test("toujours comme avant, je peux appliquer une fonction à l'intérieur") {
+  exercice("toujours comme avant, je peux appliquer une fonction à l'intérieur") {
 
-    val sacDeZero = Sac(0, Set("petit sac"))
+    val sacDeZero = Sac(0, Set("un portable"))
 
 
     //Le sealed sur le trait Sac rend ce pattern matching exhaustif
     sacDeZero.map(x => x +1) match {
-      case SacPlein(contenu, _) => contenu should be(1)
+      case SacPlein(valeur, _) => valeur should be(1)
 
       case SacVide(_) => fail("Cela ne devrait pas être un Sac Vide")
     }
@@ -102,22 +102,22 @@ class e3_un_peu_plus_algebrique extends HandsOnSuite {
     val sacVide=SacVide(Set("sac vide"))
 
     sacVide.map(x=>x+1) match {
-      case SacPlein(_,_) => fail("Cela ne devrait pas être un Sac Plein") 
+      case SacPlein(_,_) => fail("Cela ne devrait pas être un Sac Plein")
       case _ => Unit
     }
   }
 
-  test("toujours comme avant, je peux combiner mes sac") {
-    val sacDeDeux = Sac(2, Set("petit sac"))
+  exercice("toujours comme avant, je peux combiner mes sac") {
+    val sacDeDeux = Sac(2, Set("un portable"))
 
-    val sacDeCent  = Sac(100, Set("grand sac"))
+    val sacDeCent  = Sac(100, Set("un pc"))
 
     val combinaison = for (deux <- sacDeDeux; cent <- sacDeCent) yield( deux * cent )
 
     combinaison match {
-      case SacPlein(contenu, tags) => {
-        contenu should be (200)
-        tags should be(Set("petit sac", "grand sac"))
+      case SacPlein(valeur, items) => {
+        valeur should be (200)
+        items should be(Set("un portable", "un pc"))
       }
 
       case _ => fail("ne doit pas être vide")
@@ -131,9 +131,9 @@ class e3_un_peu_plus_algebrique extends HandsOnSuite {
 
   }
 
-  test("on peut filter le contenu d'un sac") {
+  exercice("on peut filter le valeur d'un sac") {
 
-    val sacDeDeux = Sac(2, Set("petit sac"))
+    val sacDeDeux = Sac(2, Set("un portable"))
 
     val sac = sacDeDeux.filter(x => x > 10)
 

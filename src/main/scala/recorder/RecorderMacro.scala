@@ -28,11 +28,6 @@ class RecorderMacro[C <: Context](val context: C) {
         try {
           testFun.splice
         } catch {
-/*          case e: TestPendingException => {
-            val mes = Option(e.getMessage).getOrElse("")
-            val ctx = context.literal(getTexts(testFun.tree)).splice
-            throw new MyTestPendingException(mes, Some(ctx), e, None)
-          }*/
           case e: TestFailedException => {
             val mes = Option(e.getMessage).getOrElse("")
             val ctx = context.literal(getTexts(testFun.tree)).splice
@@ -41,16 +36,16 @@ class RecorderMacro[C <: Context](val context: C) {
           case e: NotImplementedError => {
             val mes = Option(e.getMessage).getOrElse("")
             val ctx = context.literal(getTexts(testFun.tree)).splice
-	    mes match {
-	      case "__" =>
-		val notimpl = e.getStackTrace()(2)
-		val location = notimpl.getFileName + ":" + notimpl.getLineNumber
-		throw new MyTestPendingException(mes, Some(ctx), e, Some(location))
-	      case _ =>
-		val notimpl = e.getStackTrace()(1)
-		val location = notimpl.getFileName + ":" + notimpl.getLineNumber
-		throw new MyNotImplException(mes, None, e, Some(location))
-	    }
+            mes match {
+              case "__" =>
+                val notimpl = e.getStackTrace()(2)
+                val location = notimpl.getFileName + ":" + notimpl.getLineNumber
+                throw new MyTestPendingException(mes, Some(ctx), e, Some(location))
+              case _ =>
+                val notimpl = e.getStackTrace()(1)
+                val location = notimpl.getFileName + ":" + notimpl.getLineNumber
+                throw new MyNotImplException(mes, None, e, Some(location))
+            }
           }
           case e: Throwable => {
             val mes = Option(e.getMessage).getOrElse("")

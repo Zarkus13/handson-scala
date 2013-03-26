@@ -1,4 +1,4 @@
-package p1_1_premiers_pas
+package premiers_pas
 
 /**
 *  1mn chrono ?

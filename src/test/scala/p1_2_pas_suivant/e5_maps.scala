@@ -1,6 +1,6 @@
-package p1_2_pas_suivant
+package pas_suivant
 
-import p1_1_premiers_pas.HandsOnSuiteP1
+import premiers_pas.HandsOnSuiteP1
 
 /**
 *   Comme dans les autres langages, une map de type Map[Key, Value] est une structure
@@ -15,7 +15,7 @@ class e5_maps extends HandsOnSuiteP1 {
   /**
   * Création toute bête d’une map et première opérations
   */
-  test("C’est facile de créer une map !") {
+  exercice("C’est facile de créer une map !") {
     val myMap = Map("PA" -> "Paris", "BE" -> "Besançon", "BL" -> "Belfort")
     myMap.size should be(__)
     //la tête
@@ -31,7 +31,7 @@ class e5_maps extends HandsOnSuiteP1 {
   /**
   * L’addition de maps se fait assez naturellement et facilement avec +
   */
-  test("Addition de map") {
+  exercice("Addition de map") {
     val myMap = Map("PA" -> "Paris", "BE" -> "Besançon", "NA" -> "Nantes")
     // ajout d’un élément
     val aNewMap = myMap + ("BL" -> "Belfort")
@@ -43,7 +43,7 @@ class e5_maps extends HandsOnSuiteP1 {
   /**
   * Les types de clé
   */
-  test("On peut mixer les types de clé") {
+  exercice("On peut mixer les types de clé") {
     val myMap = Map("Ann Arbor" -> "MI", 49931 -> "MI")
     myMap("Ann Arbor") should be(__)
     myMap(49931) should be(__)
@@ -52,7 +52,7 @@ class e5_maps extends HandsOnSuiteP1 {
   /**
   * Quelques opérations sur les maps
   */
-  test("On peut accéder/supprimer les élément d’une map") {
+  exercice("On peut accéder/supprimer les élément d’une map") {
     val myMap = Map("PA" -> "Paris", "BE" -> "Besançon", "NA" -> "Nantes", "BL" -> "Belfort")
 
     // suppression d’un élément

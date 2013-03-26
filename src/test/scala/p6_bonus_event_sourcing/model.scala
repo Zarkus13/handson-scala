@@ -1,9 +1,9 @@
-package p4_bonus_event_sourcing
+package bonus_event_sourcing
 
 
 package model {
 
-import p4_bonus_event_sourcing.events._
+import bonus_event_sourcing.events._
 
 
   case class Post(id: PostId, content: PostContent)  {

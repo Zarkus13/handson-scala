@@ -1,4 +1,4 @@
-package p4_bonus_event_sourcing
+package bonus_event_sourcing
 
 import java.util.UUID
 

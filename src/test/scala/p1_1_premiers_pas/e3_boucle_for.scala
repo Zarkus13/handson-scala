@@ -1,4 +1,4 @@
-package p1_1_premiers_pas
+package premiers_pas
 
 import support.HandsOnSuite
 
@@ -12,7 +12,7 @@ class e3_boucle_for extends HandsOnSuiteP1 {
 
   //for classique
 
-  test("les for c’est assez simple") {
+  exercice("les for c’est assez simple") {
     //0, 1, 2, 3, 4, 5, 6, 7, 8, 9
     val quelqueNombres = Range(0, 10)
     // on peut aussi utiliser 'until' et 'to' => 0 until 10 == Range(0,10) == 0 to 9
@@ -32,7 +32,7 @@ class e3_boucle_for extends HandsOnSuiteP1 {
   /**
   * On peut rajouter des conditions à l’intérieur des boucles
   */
-  test("les boucles for peuvent contenir de la logique") {
+  exercice("les boucles for peuvent contenir de la logique") {
     val quelqueNombres = 0 until 10
     var somme = 0
     // somme des nombres pairs, seulement !
@@ -54,7 +54,7 @@ class e3_boucle_for extends HandsOnSuiteP1 {
   * Une boucle for peut générer une liste, sur laquelle on peut appliquer des fonctions
   * Le mot clé 'yield' est utilisé pour retourner un élément et passer à l’itération suivante.
   */
-  test("Les boucles for peuvent produire une liste, peuvent être sommée facilement") {
+  exercice("Les boucles for peuvent produire une liste, peuvent être sommée facilement") {
     val quelqueNombres = 0 until 10
 
     val uneListe =
@@ -77,7 +77,7 @@ class e3_boucle_for extends HandsOnSuiteP1 {
   * Ici on génère toutes les combinaisons possibles entre les éléments de
   * xValues et ceux de yValues.
   */
-  test("Les boucles for peuvent être imbriquées") {
+  exercice("Les boucles for peuvent être imbriquées") {
     val xValues = 1 until 5
     val yValues = 1 until 3
     val coordinates = for {

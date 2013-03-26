@@ -23,17 +23,18 @@ libraryDependencies += "org.scala-lang" % "scala-compiler" % "2.10.0"
 
 libraryDependencies += "org.scalatest" %% "scalatest" % "1.9.1"
 
+addCommandAlias("partie1-1", "test-only premiers_pas")
 
-addCommandAlias("p1-1", "test-only partie_1_1")
+addCommandAlias("partie1-2", "test-only pas_suivant")
 
-addCommandAlias("p1-2", "test-only partie_1_2")
+addCommandAlias("partie2", "test-only we_need_to_go_deeper")
 
-addCommandAlias("p2", "test-only partie_2")
+addCommandAlias("partie3", "test-only cons_et_nil")
 
-addCommandAlias("p3", "test-only partie_3")
+addCommandAlias("partie4", "test-only type_classes")
 
-addCommandAlias("p4", "test-only partie_4")
+addCommandAlias("partie5", "test-only un_sac_avec_des_items")
 
-addCommandAlias("p5", "test-only partie_5")
+addCommandAlias("partie6", "test-only bonus_event_sourcing")
 
 addCommandAlias("go", "~ test-only HandsOnScala")

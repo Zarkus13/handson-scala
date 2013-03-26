@@ -1,25 +1,25 @@
-package p5_type_classes
+package type_classes
 
 sealed trait JsValue
 case class JsString(s:String) extends JsValue{
-	override def toString():String= ???
+  override def toString():String= ???
 }
 
 case class JsNumber(n:Number) extends JsValue{
-	override def toString():String= ???
+  override def toString():String= ???
 }
 case class JsSeq(seq:Seq[JsValue]) extends JsValue{
-	override def toString():String= ???
+  override def toString():String= ???
 }
 case class JsObject(properties:Map[String, JsValue]) extends JsValue{
-	override def toString():String= ???
+  override def toString():String= ???
 }
 object JsObject{
   def apply(properties:(String,JsValue)*):JsObject= ???
 }
 
 trait Writer[A]{
-	def write(value:A):JsValue
+  def write(value:A):JsValue
 }
 object Writer{
   def apply[A]( f: A=>JsValue ):Writer[A]={
@@ -38,8 +38,8 @@ object Implicits {
 }
 
 object Json{
-	def toJson[A](value:A)(implicit writer:Writer[A]):JsValue={
-		writer.write(value)
-	}
+  def toJson[A](value:A)(implicit writer:Writer[A]):JsValue={
+    writer.write(value)
+  }
 }
 

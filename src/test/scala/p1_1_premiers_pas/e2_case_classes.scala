@@ -1,4 +1,4 @@
-package p1_1_premiers_pas
+package premiers_pas
 
 import support.HandsOnSuite
 
@@ -25,7 +25,7 @@ class e2_case_classes extends HandsOnSuiteP1{
   /**
   * Création d'une instance d'une case class
   */
-  test("C'est facile de créer une case classe !!") {
+  exercice("C'est facile de créer une case classe !!") {
     case class MonChien(nom: String, race: String) // par défaut les paramètres sont des 'val'
 
     val d1 = MonChien("Scooby", "Doberman")
@@ -41,7 +41,7 @@ class e2_case_classes extends HandsOnSuiteP1{
   /**
   * Les égalités
   */
-  test("Les case classes ont une méthode equals qui 'marche'") {
+  exercice("Les case classes ont une méthode equals qui 'marche'") {
     case class Personne(prenom: String, nom: String)
 
     val p1 = new Personne("Martin", "Odersky")
@@ -60,7 +60,7 @@ class e2_case_classes extends HandsOnSuiteP1{
   /**
   * La méthode hashcode
   */
-  test("Les case classes ont une méthode hascode qui marche (de base)") {
+  exercice("Les case classes ont une méthode hascode qui marche (de base)") {
     case class Personne(prenom: String, nom: String)
 
     val p1 = new Personne("Iron", "Man")
@@ -74,7 +74,7 @@ class e2_case_classes extends HandsOnSuiteP1{
   /**
   * La méthode toString
   */
-  test("Les cases classes définissent de base la méthode to String") {
+  exercice("Les cases classes définissent de base la méthode to String") {
     case class MonChien(nom: String, race: String)
     val d1 = MonChien("Scooby", "Doberman")
 
@@ -84,7 +84,7 @@ class e2_case_classes extends HandsOnSuiteP1{
   /**
   * Les accesseurs
   */
-  test("Les cases classes définissent automatiquement les accesseurs") {
+  exercice("Les cases classes définissent automatiquement les accesseurs") {
     case class MonChien(nom: String, race: String)
 
     val d1 = MonChien("Scooby", "Doberman")
@@ -99,7 +99,7 @@ class e2_case_classes extends HandsOnSuiteP1{
   /**
    * les cases classes peuvent avoir des propriétés mutables, mais on n'a pas envie de vous montrer ça ;)
    */
-  test("On peut modifier les cases classes par copie") {
+  exercice("On peut modifier les cases classes par copie") {
     case class MonChien(nom: String, race: String)
 
     val d1 = MonChien("Scooby", "Doberman")
@@ -116,7 +116,7 @@ class e2_case_classes extends HandsOnSuiteP1{
   /**
   * les cases classes peuvent avoir des paramètres nommés et des paramètres par défaut
   */
-  test("les cases classes ont des paramètres par défaut et des paramètres nommés") {
+  exercice("les cases classes ont des paramètres par défaut et des paramètres nommés") {
     case class Personne(prenom: String, nom: String, age: Int = 0, tel: String = "")
 
     val p1 = Personne("Sherlock", "Holmes", 23, "06-XX-XX-XX-XX")

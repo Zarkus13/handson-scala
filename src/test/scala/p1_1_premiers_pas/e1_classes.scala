@@ -1,4 +1,4 @@
-package p1_1_premiers_pas
+package premiers_pas
 
 import support.HandsOnSuite
 
@@ -46,7 +46,7 @@ class e1_classes extends HandsOnSuiteP1{
   /**
   * Dans les cas où l'on a un paramètre immuable, on obtient naturellement un getter mais pas de setter
   */
-  test("Le paramètre val définit un getter") {
+  exercice("Le paramètre val définit un getter") {
     val aClass = new ClassWithValParameter("name goes here")
     aClass.name should be(__)
   }
@@ -55,7 +55,7 @@ class e1_classes extends HandsOnSuiteP1{
   /**
   * Dans les cas où l'on a un paramètre mutable, on obtient naturellement un getter et un setter
   */
-  test("Le paramètre var définit un getter et un setter") {
+  exercice("Le paramètre var définit un getter et un setter") {
     val aClass = new ClassWithVarParameter("description goes here")
     aClass.description should be(__)
 
@@ -71,7 +71,7 @@ class e1_classes extends HandsOnSuiteP1{
   class ClassWithPrivateFields(name: String)
   // équivalent de : class ClassWithPrivateFields(private val name: String)
 
-  test("champs privé d'une classe") {
+  exercice("champs privé d'une classe") {
     val aClass = new ClassWithPrivateFields("name")
     assert(false)
     // NOTE: aClass.name n'est pas accessible
@@ -87,7 +87,7 @@ class e1_classes extends HandsOnSuiteP1{
     }
   }
 
-  test("champs privé mutable d'une classe") {
+  exercice("champs privé mutable d'une classe") {
     val aClass = new ClassWithPrivateVarFields("name")
     // NOTE: aClass.name n'est pas accessible
 
