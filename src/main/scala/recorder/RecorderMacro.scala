@@ -61,9 +61,19 @@ class RecorderMacro[C <: Context](val context: C) {
 
 
   def getTexts(recording:Tree):String = {
-    val exps = splitExpressions(recording)
-    exps.map(ex => getText(ex)).mkString("\n")
+    def lines(rec : Tree):(Int,Int)  = {
+      rec match {
+        case Block(xs, y) => (rec.pos.line, y.pos.line)
+        case _ => (rec.pos.line, rec.pos.line)
+      }
 
+    }
+
+    val (lstart, lend) = lines(recording)
+
+    (for (line <- lstart to lend) yield {
+      recording.pos.source.lineToString(line)
+    }).mkString("\n")
   }
 
   private[this] def declareRuntime: Tree = {
