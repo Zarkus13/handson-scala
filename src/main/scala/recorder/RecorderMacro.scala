@@ -22,14 +22,14 @@ class RecorderMacro[C <: Context](val context: C) {
         val listener = new TestRecorderListener()
 
         val recoderRuntime = new RecorderRuntime(listener)
-
         try {
           testFun.splice
         } catch {
           case e: TestFailedException => {
             val mes = Option(e.getMessage).getOrElse("")
             val ctx = context.literal(getTexts(testFun.tree)).splice
-            throw new MyTestFailedException(mes, Some(ctx), e, e.failedCodeFileNameAndLineNumberString)
+            val location = e.failedCodeFileNameAndLineNumberString.map( suite.splice.getClass.getPackage.getName + java.io.File.separator + _ )
+            throw new MyTestFailedException(mes, Some(ctx), e, location)
           }
           case e: NotImplementedError => {
             val mes = Option(e.getMessage).getOrElse("")
@@ -37,18 +37,18 @@ class RecorderMacro[C <: Context](val context: C) {
             mes match {
               case "__" =>
                 val notimpl = e.getStackTrace()(2)
-                val location = notimpl.getFileName + ":" + notimpl.getLineNumber
+                val location = suite.splice.getClass.getPackage.getName + java.io.File.separator + notimpl.getFileName + ":" + notimpl.getLineNumber
                 throw new MyTestPendingException(mes, Some(ctx), e, Some(location))
               case _ =>
                 val notimpl = e.getStackTrace()(1)
-                val location = notimpl.getFileName + ":" + notimpl.getLineNumber
+                val location = suite.splice.getClass.getPackage.getName + java.io.File.separator + notimpl.getFileName + ":" + notimpl.getLineNumber
                 throw new MyNotImplException(mes, None, e, Some(location))
             }
           }
           case e: Throwable => {
             val ctx = e.getStackTrace.take(7).mkString("\n") //context.literal(getTexts(testFun.tree)).splice
             val firstStackTrace = e.getStackTrace()(0)
-            val location = firstStackTrace.getFileName + ":" + firstStackTrace.getLineNumber
+            val location = suite.splice.getClass.getPackage.getName + java.io.File.separator + firstStackTrace.getFileName + ":" + firstStackTrace.getLineNumber
             val mes = e.toString + "\n    at " + location // Option(e.getMessage).getOrElse("")
             throw new MyException(mes, Some(ctx), e, Some(location))
           }
