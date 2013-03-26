@@ -6,7 +6,7 @@ import org.scalatest.matchers.{Matcher, ShouldMatchers}
 import org.scalatest.events.{TestPending, TestFailed, TestIgnored, Event, InfoProvided}
 import org.scalatest.exceptions.{TestPendingException}
 
-import recorder.{MyTestPendingException, MyTestFailedException, MyException}
+import recorder.{MyTestPendingException, MyTestFailedException, MyException, MyNotImplException, CustomTestPendingException}
 
 import language.experimental.macros
 
@@ -16,7 +16,7 @@ import recorder.RecorderMacro
 
 trait HandsOnSuite extends MyFunSuite with ShouldMatchers {
   def __ : Matcher[Any] = {
-    throw new TestPendingException
+    throw new NotImplementedError("__")
   }
 
   implicit val suite:MyFunSuite = this
@@ -68,57 +68,33 @@ trait HandsOnSuite extends MyFunSuite with ShouldMatchers {
       footer.split("\n").foreach(info(_))
       CustomStopper.testFailed
 
-/*
-      failed = true
-
-      (event, exception) match {
-        case (_:TestFailed, Some(_:MyTestPendingException)) => printHeaderPendingMessage
-        case (e:TestFailed, _) => printHeaderFailMessage
-        case _ => printHeaderPendingMessage
-      }
-      info("")
-      info("")
-      CustomStopper.testFailed(event).split("\n").map("  " + _ ).foreach(info(_))
-      info("")
-      exception match {
-        case Some(e: MyTestPendingException) => {
-          Option(e.getMessage).getOrElse("").split("\n").map( "    " + _).foreach(info(_))
-        }
-        case Some(e) => {
-          info("  => " + e.getMessage + " <= ")
-          info("")
-          e.getStackTrace.take(5).foreach( _e => info("     " + _e.toString))
-        }
-        case None =>
-      }
-      info("")
-      info("")
-
-
-      (event, exception) match {
-        case (e:TestFailed, Some(_:MyTestPendingException)) => printFooterPendingMessage
-        case (e:TestFailed, _) => printFooterFailMessage
-        case _ => printFooterPendingMessage
-      }*/
     }
 
     def apply(event: Event) {
       event match {
         case e: TestFailed => {
           e.throwable match {
+	    //pour les erreurs d'assertions => sans stacktrace
             case Some(failure: MyTestFailedException) =>
               val message = Option(failure.getMessage)
-              sendInfo(headerFail, Some(e.suiteName), Some(e.testName), failure.fileNameAndLineNumber, message, Some(failure.context), footerFail)
+              sendInfo(headerFail, Some(e.suiteName), Some(e.testName), failure.fileNameAndLineNumber, message, failure.context, footerFail)
+	    //pour les __ => avec context
             case Some(pending: MyTestPendingException) =>
-              sendInfo(headerPending, Some(e.suiteName), Some(e.testName), None, Some("Vous devez remplacer les __ par les valeurs correctes"), Some(pending.context), footerPending)
+              sendInfo(headerPending, Some(e.suiteName), Some(e.testName), pending.fileNameAndLineNumber, Some("Vous devez remplacer les __ par les valeurs correctes"), pending.context, footerPending)
+	    //pour les ??? => sans context
+            case Some(pending: MyNotImplException) =>
+              sendInfo(headerPending, Some(e.suiteName), Some(e.testName), pending.fileNameAndLineNumber, Some("Vous devez remplacer les ??? par les implémentations correctes"), pending.context, footerPending)
+	    //pour les autres erreurs => avec stacktrace
             case Some(failure: MyException) =>
               val context:String =  failure.getStackTrace.take(5).mkString("\n")
-              sendInfo(headerFail, Some(e.suiteName), Some(e.testName), None, Option(failure.getMessage), Some(failure.context), footerFail)
-            case Some(e) => println("something went wrong")
+              sendInfo(headerFail, Some(e.suiteName), Some(e.testName), failure.fileNameAndLineNumber, Option(failure.getMessage), failure.context, footerFail)
+	    //ça ne devrait pas arriver
+            case Some(e) =>
+	      println("something went wrong")
+	    //ça non plus, un TestFailed a normalement une excepetion attachée
             case None =>
               sendInfo(headerFail, Some(e.suiteName), Some(e.testName), None, None, None, footerFail)
           }
-
         }
         case e: TestPending => sendInfo(headerPending, Some(e.suiteName), Some(e.testName), None, Some("pending"), None, footerPending)
         case _ => other(event)

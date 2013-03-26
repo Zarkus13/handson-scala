@@ -7,3 +7,5 @@ target
 lib_managed
 ivyrepo
 sbtboot
+sbt/repository
+sbt/sbt
