@@ -48,9 +48,11 @@ class RecorderMacro[C <: Context](val context: C) {
             }
           }
           case e: Throwable => {
-            val mes = Option(e.getMessage).getOrElse("")
-            val ctx = context.literal(getTexts(testFun.tree)).splice
-            throw new MyException(mes, Some(ctx), e, None)
+            val ctx = e.getStackTrace.take(7).mkString("\n") //context.literal(getTexts(testFun.tree)).splice
+            val firstStackTrace = e.getStackTrace()(0)
+            val location = firstStackTrace.getFileName + ":" + firstStackTrace.getLineNumber
+            val mes = e.toString + "\n    at " + location // Option(e.getMessage).getOrElse("")
+            throw new MyException(mes, Some(ctx), e, Some(location))
           }
         }
 
@@ -115,10 +117,10 @@ class RecorderMacro[C <: Context](val context: C) {
 
   private[this] def recordExpression(text: String, ast: String, expr: Tree) = {
     val buggedExpr = recordAllValues(expr)
-    log(expr, "Expression  : " + text.trim())
+    /*log(expr, "Expression  : " + text.trim())
     log(expr, "Original AST: " + ast)
     log(expr, "Bugged AST  : " + showRaw(buggedExpr))
-    log(expr, "")
+    log(expr, "")*/
 
     Apply(
       Select(
