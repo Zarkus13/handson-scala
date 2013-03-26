@@ -12,7 +12,7 @@ class e1_bonus_stream extends HandsOnSuite {
 
     def filter(fonction:A => Boolean):Stream[A]
 
-    final def union[B >: A](Stream: => Stream[B]):Stream[B]= {
+    final def union[B >: A](stream: => Stream[B]):Stream[B]= {
       this match {
         case cons:Cons[A] => Cons(cons.head, ???)
         case EmptyStream => ???
