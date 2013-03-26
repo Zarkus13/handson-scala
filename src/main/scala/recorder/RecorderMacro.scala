@@ -99,7 +99,11 @@ class RecorderMacro[C <: Context](val context: C) {
 
     val source = recording.pos.source
 
-    val sourceContent = source.content.map(c => if (chars.isLineBreakChar(c.toChar)) RecorderMacro.lineSep else c.toString()).mkString
+    val sourceFile:java.io.File = source.file.file.asInstanceOf[java.io.File]
+
+    //val sourceContent = source.content.map(c => if (chars.isLineBreakChar(c.toChar)) RecorderMacro.lineSep else c.toString()).mkString
+
+    val sourceContent:String =  MyFunSuite.fileToArray(sourceFile).mkString(RecorderMacro.lineSep)
     (sourceContent, lstart, lend)
 
   }

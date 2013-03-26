@@ -1,6 +1,8 @@
 package recorder
 
 import org.scalatest.{Tag, FunSuite}
+import java.io.File
+import collection.mutable.ArrayBuffer
 
 trait MyFunSuite extends FunSuite {
 
@@ -29,5 +31,11 @@ object MyFunSuite  {
     source.zipWithIndex.map(t => {
       " " + completewithspace(t._2 + 1) + " |" + t._1
     })
+  }
+
+
+  def fileToArray(file:File):Array[String] = {
+    val buffer1 = new ArrayBuffer[String]()
+    scala.io.Source.fromFile(file.getAbsolutePath, "utf-8").getLines().toArray
   }
 }
