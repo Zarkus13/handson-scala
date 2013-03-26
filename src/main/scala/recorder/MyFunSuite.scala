@@ -40,7 +40,6 @@ object MyFunSuite  {
 
 
   def fileToArray(file:File):Array[String] = {
-    val buffer1 = new ArrayBuffer[String]()
-    scala.io.Source.fromFile(file.getAbsolutePath, "utf-8").getLines().toArray
+    scala.io.Source.fromFile(file, "utf-8").getLines().toArray
   }
 }
