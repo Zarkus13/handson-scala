@@ -4,8 +4,6 @@ package recorder
 import reflect.macros.Context
 import org.scalatest.exceptions._
 
-import reflect.macros.Context
-
 class RecorderMacro[C <: Context](val context: C) {
   import context.universe._
 

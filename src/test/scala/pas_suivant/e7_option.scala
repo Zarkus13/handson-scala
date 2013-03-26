@@ -40,10 +40,12 @@ class e7_option extends HandsOnSuiteP1 {
     None.toString should be(__)
   }
 
-  /*exercice("et en une liste aussi") {
+  /*
+  exercice("et en une liste aussi") {
     val a = None
     a.toList should be(__)
-  }*/
+  }
+  */
 
   exercice("None est considéré comme vide") {
     None.isEmpty should be(__)
