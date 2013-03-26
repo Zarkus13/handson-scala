@@ -22,18 +22,21 @@ class RecorderMacro[C <: Context](val context: C) {
         val listener = new TestRecorderListener()
 
         val recoderRuntime = new RecorderRuntime(listener)
+
+        val ctx = context.literal(getTexts(testFun.tree)).splice
+
         try {
           testFun.splice
         } catch {
           case e: TestFailedException => {
             val mes = Option(e.getMessage).getOrElse("")
-            val ctx = context.literal(getTexts(testFun.tree)).splice
+
             val location = e.failedCodeFileNameAndLineNumberString.map( suite.splice.getClass.getPackage.getName + java.io.File.separator + _ )
             throw new MyTestFailedException(mes, Some(ctx), e, location)
+
           }
           case e: NotImplementedError => {
             val mes = Option(e.getMessage).getOrElse("")
-            val ctx = context.literal(getTexts(testFun.tree)).splice
             mes match {
               case "__" =>
                 val notimpl = e.getStackTrace()(2)
@@ -46,11 +49,13 @@ class RecorderMacro[C <: Context](val context: C) {
             }
           }
           case e: Throwable => {
+
             val ctx = e.getStackTrace.take(7).mkString("\n") //context.literal(getTexts(testFun.tree)).splice
             val firstStackTrace = e.getStackTrace()(0)
             val location = suite.splice.getClass.getPackage.getName + java.io.File.separator + firstStackTrace.getFileName + ":" + firstStackTrace.getLineNumber
             val mes = e.toString + "\n    at " + location // Option(e.getMessage).getOrElse("")
             throw new MyException(mes, Some(ctx), e, Some(location))
+
           }
         }
 
@@ -61,9 +66,19 @@ class RecorderMacro[C <: Context](val context: C) {
 
 
   def getTexts(recording:Tree):String = {
-    val exps = splitExpressions(recording)
-    exps.map(ex => getText(ex)).mkString("\n")
+    def lines(rec : Tree):(Int,Int)  = {
+      rec match {
+        case Block(xs, y) => (rec.pos.line, y.pos.line)
+        case _ => (rec.pos.line, rec.pos.line)
+      }
 
+    }
+
+    val (lstart, lend) = lines(recording)
+
+    (for (line <- lstart to lend) yield {
+      recording.pos.source.lineToString(line)
+    }).mkString("\n")
   }
 
   private[this] def declareRuntime: Tree = {
