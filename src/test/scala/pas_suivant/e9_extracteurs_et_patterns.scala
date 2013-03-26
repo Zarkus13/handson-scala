@@ -20,9 +20,9 @@ class e9_extracteurs_et_patterns extends HandsOnSuiteP1 {
     class Email(val value:String)
     object Email { def unapply(email:Email):Option[String]=Option(email.value)}
 
-    val mailstring="foo@bar.com"
-    val email=new Email(mailstring)
-    val Email(extractedString)=email
+    val mailstring = "foo@bar.com"
+    val email = new Email(mailstring)
+    val Email(extractedString) = email
 
     (extractedString == mailstring) should be(__)
   }
@@ -33,13 +33,13 @@ class e9_extracteurs_et_patterns extends HandsOnSuiteP1 {
   exercice("les extracteurs fonctionnent aussi avec plusieurs valeurs") {
     class Email(val value:String, val spamRatio:Integer)
     object Email {
-      def unapply(email:Email):Option[(String,Integer)]=Option((email.value,email.spamRatio))
+      def unapply(email:Email):Option[(String,Integer)] = Option((email.value,email.spamRatio))
     }
 
-    val mailstring="foo@bar.com"
-    val spamRatio=5
-    val email=new Email(mailstring,4)
-    val Email(extractedString,extractedRatio)=email
+    val mailstring = "foo@bar.com"
+    val spamRatio = 5
+    val email = new Email(mailstring,4)
+    val Email(extractedString,extractedRatio) = email
 
     (extractedRatio == spamRatio) should be(__)
     (extractedString == mailstring) should be(__)
@@ -52,13 +52,26 @@ class e9_extracteurs_et_patterns extends HandsOnSuiteP1 {
   exercice("Un extracteur est définit automatiquement pour toute case classe") {
     case class Email(val value:String)
 
-    val mailstring="foo@bar.com"
-    val email=new Email(mailstring)
-    val Email(extractedString)=email
+    val mailstring = "foo@bar.com"
+    val email = new Email(mailstring)
+    val Email(extractedString) = email
 
     (extractedString == mailstring) should be(__)
   }
-
+ /*  
+ *   C’est une généralisation du switch, rencontré dans les langages de programmation Java ou C, 
+ *   au hiérachie de classes. 
+ *   Côté syntaxe, on utilise le mot-clé match puis case pour distinguer
+ *   les différents patterns. 
+ *
+ *       e match {case p1 => e1 ... case pn => en }, 
+ *
+ *   où pi représente les patterns et ei la valeur renvoyée dans le cas où le pattern pi match e.
+ *
+ *   'match' est une expression, donc retourne toujours une valeur. Dans le cas où aucun des 
+ *   patterns ne match, l’exception MatchError est renvoyée. 
+ *
+ */
  /**
   * le pattern matching peut être utilisé sur des chaines
   */
@@ -69,10 +82,12 @@ class e9_extracteurs_et_patterns extends HandsOnSuiteP1 {
       case "A" => "stringA"
       case "B" => "stringB"
       case "C" => "stringC"
+      // la notation “_” désigne tout ce qui n’a pas besoin d’être nommé
+      // Le cas case _ permet de gérer tous les autres cas, sans en laisser passer à l’attrape
       case _ => "DEFAULT"
     }
 
-    (actual=="stringB") should be (__)
+    (actual == "stringB") should be (__)
 
     val default = "E" match {
       case "A" => "stringA"
@@ -81,7 +96,7 @@ class e9_extracteurs_et_patterns extends HandsOnSuiteP1 {
       case _ => "DEFAULT"
     }
 
-    (default=="DEFAULT") should be (__)
+    (default == "DEFAULT") should be (__)
   }
 
   /**
@@ -89,9 +104,9 @@ class e9_extracteurs_et_patterns extends HandsOnSuiteP1 {
   */
   exercice("le pattern matching peut être utilisé sur des types") {
     sealed trait Root
-    class A(val a:String="A") extends Root
-    class B(val b:String="B") extends Root
-    class C(val c:String="C") extends Root
+    class A(val a:String = "A") extends Root
+    class B(val b:String = "B") extends Root
+    class C(val c:String = "C") extends Root
 
     val b:Root=new B()
 
@@ -110,7 +125,7 @@ class e9_extracteurs_et_patterns extends HandsOnSuiteP1 {
   */
   exercice("le pattern matching peut être utilisé avec des extracteurs") {
     case class A(val a:String="A")
-    val a:A=new A(a="b")
+    val a:A = new A(a="b")
 
     val actual = a match {
       case A("a") => "stringA"
@@ -119,13 +134,13 @@ class e9_extracteurs_et_patterns extends HandsOnSuiteP1 {
       case _ => "DEFAULT"
     }
 
-    (actual=="stringB") should be (__)
+    (actual == "stringB") should be (__)
   }
 
   exercice("le pattern matching peut être utilisé avec des extracteurs pour capturer des valeurs") {
     case class A(val a:String, val b:String)
 
-    val a:A=new A(a="string", b="B")
+    val a:A = new A(a="string", b="B")
 
     val actual = a match {
       case A(a,b) => a+b
@@ -137,7 +152,7 @@ class e9_extracteurs_et_patterns extends HandsOnSuiteP1 {
 
   exercice("Il n’est pas obligatoire de capturer toutes les valeurs") {
     case class A(val a:String, val b:String)
-    val a:A=new A(a="string", b="B")
+    val a:A = new A(a="string", b="B")
 
     val actual = a match {
       case A(a,_) => a
@@ -151,49 +166,49 @@ class e9_extracteurs_et_patterns extends HandsOnSuiteP1 {
     case class A(val a:String, val b:String)
     case class B(val a:A)
 
-    val a:A=new A(a="string", b="B")
-    val b:B=new B(a)
+    val a:A = new A(a="string", b="B")
+    val b:B = new B(a)
 
     val actual = b match {
       case B(A(_,b)) => b
       case _ => "DEFAULT"
     }
 
-    (actual=="B") should be (__)
+    (actual == "B") should be (__)
   }
 
   exercice("Les listes ont différents patterns") {
-    val s=Seq("a","b")
+    val s = Seq("a","b")
     val actual = s match {
       case Seq("a","b") => "ok"
       case _ => "DEFAULT"
     }
 
-    (actual=="ok") should be (__)
+    (actual == "ok") should be (__)
 
     val nextActual = s match {
       case "a"::"b"::Nil => "ok"
       case _ => "DEFAULT"
     }
 
-    (nextActual=="ok") should be (__)
+    (nextActual == "ok") should be (__)
 
     val lastActual = s match {
       case head::tail => head
       case _ => "DEFAULT"
     }
 
-    (lastActual=="a") should be (__)
+    (lastActual == "a") should be (__)
   }
 
   exercice("patterns are evaluated in declaration order") {
-    val s=Seq("a","b")
+    val s = Seq("a","b")
     val actual = s match {
       case Seq("a","b") => "ok"
       case head::tail => "ko"
       case _ => "DEFAULT"
     }
 
-    (actual=="ok") should be (__)
+    (actual == "ok") should be (__)
   }
 }
