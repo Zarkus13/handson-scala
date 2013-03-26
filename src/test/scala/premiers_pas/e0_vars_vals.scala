@@ -19,12 +19,18 @@ class e0_vars_vals extends HandsOnSuiteP1 {
     var a = 5
     a should be(__)
 
+    anchor(a)
+
     a = 7
+
+    anchor(a)
+
     a should be(__)
   }
 
   exercice("Par contre les vals sont immuables (équivalent de final Java), elles ne peuvent pas être réaffectées") {
     val a = 5
+
     a should be(__)
 
     /*

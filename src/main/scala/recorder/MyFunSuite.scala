@@ -6,6 +6,10 @@ import collection.mutable.ArrayBuffer
 
 trait MyFunSuite extends FunSuite {
 
+
+  implicit val anchorRecorder = new AnchorRecorder()
+
+
   def testPublic(testName: String)(testFun: => Unit) {
    test(testName)(testFun)
   }

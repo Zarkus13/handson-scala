@@ -10,7 +10,7 @@ class RecorderMacro[C <: Context](val context: C) {
 
   def apply(testName: context.Expr[String])
            (testFun: context.Expr[Unit])
-           (suite: context.Expr[MyFunSuite]): context.Expr[Unit] = {
+           (suite: context.Expr[MyFunSuite], anchorRecorder:context.Expr[AnchorRecorder]): context.Expr[Unit] = {
 
     val texts = getTexts(testFun.tree)
 
@@ -31,15 +31,25 @@ class RecorderMacro[C <: Context](val context: C) {
         val testExpressionLineEnd:Int  = context.literal(texts._3).splice
 
 
+        val anchorRecorderAlias = anchorRecorder.splice
+
+        anchorRecorderAlias.reset()
+
+
+        def anchorsToMessages = {
+          "\n\n" + anchorRecorderAlias.records.map(_.toMessage).mkString("\n")
+        }
+
+
         def ctx(errorLine:Int):String = {
-          MyFunSuite.prettyShow(testSourceFile.drop(testExpressionLineStart - 1).take(testExpressionLineEnd - testExpressionLineStart + 2), errorLine).mkString("\n")
+          MyFunSuite.prettyShow(testSourceFile.drop(testExpressionLineStart - 1).take(testExpressionLineEnd - testExpressionLineStart + 2), errorLine).mkString("\n") +  anchorsToMessages
         }
         def errorCtx(errorLine:Int):String = {
           MyFunSuite.prettyShow(testSourceFile.drop(errorLine - 2 ).take(3), errorLine).mkString("\n")
         }
 
         def completeContext(errorLine:Option[Int]):String =  {
-            errorLine.map(i => errorCtx(i) + "\n     ...\n" + ctx(i)).getOrElse("")
+          errorLine.map(i => errorCtx(i) + "\n     ...\n" + ctx(i)).getOrElse("") + anchorsToMessages
         }
 
         val suitePackage = suite.splice.getClass.getPackage.toString
@@ -135,8 +145,30 @@ object RecorderMacro {
 
   def apply(context: Context)(testName: context.Expr[String])
            (testFun: context.Expr[Unit])
-           (suite: context.Expr[MyFunSuite]): context.Expr[Unit] = {
+           (suite: context.Expr[MyFunSuite], anchorRecorder: context.Expr[AnchorRecorder]): context.Expr[Unit] = {
 
-    new RecorderMacro[context.type](context).apply(testName)(testFun)(suite)
+    new RecorderMacro[context.type](context).apply(testName)(testFun)(suite, anchorRecorder)
+  }
+
+
+  def anchor[T: context.WeakTypeTag](context: Context)(a : context.Expr[T]):context.Expr[Unit] = {
+    import context.universe._
+
+    val aCode = context.literal(show(a.tree))
+
+    val line = context.literal(a.tree.pos.line)
+
+    val resultExp = reify {
+       val result = a.splice
+       ("" + result)
+    }
+
+    context.Expr[Unit](
+      Apply(Select(Select(
+        context.prefix.tree, newTermName("anchorRecorder")), newTermName("record")), List(aCode.tree, line.tree, resultExp.tree))
+
+    )
+
+
   }
 }

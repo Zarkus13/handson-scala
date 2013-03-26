@@ -6,12 +6,10 @@ import org.scalatest.matchers.{Matcher, ShouldMatchers}
 import org.scalatest.events.{TestPending, TestFailed, TestIgnored, Event, InfoProvided}
 import org.scalatest.exceptions.{TestPendingException}
 
-import recorder.{MyTestPendingException, MyTestFailedException, MyException, MyNotImplException, CustomTestPendingException}
+import recorder._
 
 import language.experimental.macros
-
-import recorder.MyFunSuite
-import recorder.RecorderMacro
+import scala.Some
 
 
 trait HandsOnSuite extends MyFunSuite with ShouldMatchers {
@@ -22,11 +20,10 @@ trait HandsOnSuite extends MyFunSuite with ShouldMatchers {
   implicit val suite:MyFunSuite = this
 
 
-  /*class RecorderWrapper(suite:HandsOnSuite) extends (Unit => Unit) {
-    def apply(testFun: Unit):Unit = macro RecorderMacro.apply
-  }  */
 
-  def exercice(testName:String)(testFun: Unit)(implicit suite: MyFunSuite):Unit = macro RecorderMacro.apply
+  def anchor[A](a:A):Unit = macro RecorderMacro.anchor[A]
+
+  def exercice(testName:String)(testFun: Unit)(implicit suite: MyFunSuite, anchorRecorder: AnchorRecorder):Unit = macro RecorderMacro.apply
 
 
 
