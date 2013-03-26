@@ -7,7 +7,10 @@ import support.HandsOnSuite
 * ici on défini notre arborescence de type json,
 * avec string, number, seq et object.
 * représentant tous les types json possibles
-* et étendant le même trait JsValue
+* et étendant le même trait JsValue. ce trait est
+* scellé, il ne peut pas être etendu en dehors de
+* l'unité de compilation. essayez de creer une
+* classe étendant ce trait dans un autre fichier
 */
 sealed trait JsValue
 
@@ -55,7 +58,7 @@ object Writer{
 }
 
 /*
-* Dans cet objet on défini les writer pour les types qui nous intéresse.
+* Dans cet objet on défini les writer pour les types qui nous intéressent.
 * L'intérêt de les marquer implicit est que si on les importe à un endroit du code
 * ils seront présent pour tout de scope du code.
 */
@@ -132,6 +135,14 @@ class testJson extends HandsOnSuite {
   }
 }
 package client {
+  /*
+  * On simule ici un utilisateur de notre bibliothèque JSON,
+  * il veut sérialiser un objet qu'il a défini lui même.
+  * Cet objet n'est bien sur pas connu de la bibliothèque.
+  * Pourtant nous allons pouvoir étendre cette dernière de
+  * manière à conserver toutes les garanties de typage et
+  * a ce que ces garanties soient vérifiées à la compilation
+  */
   case class User(name:String,age:Int,friends:Seq[String])
 
   object User{
