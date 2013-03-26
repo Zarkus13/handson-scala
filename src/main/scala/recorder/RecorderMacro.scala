@@ -3,6 +3,7 @@ package recorder
 
 import reflect.macros.Context
 import org.scalatest.exceptions._
+import reflect.internal.Chars
 
 class RecorderMacro[C <: Context](val context: C) {
   import context.universe._
@@ -14,16 +15,34 @@ class RecorderMacro[C <: Context](val context: C) {
     val expressions = recordExpressions(testFun.tree)
 
 
-
+    val texts = getTexts(testFun.tree)
 
     reify(
       suite.splice.testPublic(testName.splice)({
 
-        val listener = new TestRecorderListener()
+        lazy val testSourceFile:Array[String] =  {
 
-        val recoderRuntime = new RecorderRuntime(listener)
+          val content:Array[String] = context.literal(texts._1).splice.split(RecorderMacro.lineSep)
 
-        val ctx = context.literal(getTexts(testFun.tree)).splice
+          MyFunSuite.sourceProcessor(content)
+        }
+
+        val testExpressionLineStart:Int = context.literal(texts._2).splice
+
+        val testExpressionLineEnd:Int  = context.literal(texts._3).splice
+
+
+        lazy val ctx:String = {
+          testSourceFile.drop(testExpressionLineStart).take(testExpressionLineEnd - testExpressionLineStart).mkString("\n")
+        }
+
+        def errorCtx(errorLine:Int):String = {
+          testSourceFile.drop(errorLine - 2 ).take(3).mkString("\n")
+        }
+
+        def completeContext(errorLine:Option[Int]):String =  {
+            errorLine.map(i => errorCtx(i) + "\n...\n").getOrElse("") + ctx
+        }
 
         try {
           testFun.splice
@@ -31,17 +50,22 @@ class RecorderMacro[C <: Context](val context: C) {
           case e: TestFailedException => {
             val mes = Option(e.getMessage).getOrElse("")
 
+            val failedCtx = completeContext(e.failedCodeLineNumber)
+
             val location = e.failedCodeFileNameAndLineNumberString.map( suite.splice.getClass.getPackage.getName + java.io.File.separator + _ )
-            throw new MyTestFailedException(mes, Some(ctx), e, location)
+            throw new MyTestFailedException(mes, Some(failedCtx), e, location)
 
           }
           case e: NotImplementedError => {
+
+
+
             val mes = Option(e.getMessage).getOrElse("")
             mes match {
               case "__" =>
                 val notimpl = e.getStackTrace()(2)
                 val location = suite.splice.getClass.getPackage.getName + java.io.File.separator + notimpl.getFileName + ":" + notimpl.getLineNumber
-                throw new MyTestPendingException(mes, Some(ctx), e, Some(location))
+                throw new MyTestPendingException(mes, Some(completeContext(Some(notimpl.getLineNumber))), e, Some(location))
               case _ =>
                 val notimpl = e.getStackTrace()(1)
                 val location = suite.splice.getClass.getPackage.getName + java.io.File.separator + notimpl.getFileName + ":" + notimpl.getLineNumber
@@ -65,7 +89,7 @@ class RecorderMacro[C <: Context](val context: C) {
   }
 
 
-  def getTexts(recording:Tree):String = {
+  def getTexts(recording:Tree):(String, Int,Int) = {
     def lines(rec : Tree):(Int,Int)  = {
       rec match {
         case Block(xs, y) => (rec.pos.line, y.pos.line)
@@ -73,12 +97,14 @@ class RecorderMacro[C <: Context](val context: C) {
       }
 
     }
-
+    val chars = new Chars {}
     val (lstart, lend) = lines(recording)
 
-    (for (line <- lstart to lend) yield {
-      recording.pos.source.lineToString(line)
-    }).mkString("\n")
+    val source = recording.pos.source
+
+    val sourceContent = source.content.map(c => if (chars.isLineBreakChar(c.toChar)) RecorderMacro.lineSep else c.toString()).mkString
+    (sourceContent, lstart, lend)
+
   }
 
   private[this] def declareRuntime: Tree = {
@@ -201,6 +227,9 @@ class RecorderMacro[C <: Context](val context: C) {
 
 
 object RecorderMacro {
+
+  lazy val lineSep:String = "-----"
+
   def apply(context: Context)(testName: context.Expr[String])
            (testFun: context.Expr[Unit])
            (suite: context.Expr[MyFunSuite]): context.Expr[Unit] = {
