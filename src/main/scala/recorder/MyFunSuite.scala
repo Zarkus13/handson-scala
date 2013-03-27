@@ -4,6 +4,7 @@ import org.scalatest.{Tag, FunSuite}
 import java.io.File
 import collection.mutable.ArrayBuffer
 import org.scalatest.exceptions.TestFailedException
+import annotation.switch
 
 trait MyFunSuite extends FunSuite {
 
@@ -138,6 +139,34 @@ object MyFunSuite  {
   }
 }
 
-class TestContext( laZysource: => Array[String], val testStartLine:Int,val testEndLine:Int)   {
-  lazy val source = laZysource
+class TestContext( laZysource: => String , val testStartLine:Int,val testEndLine:Int)   {
+  lazy val source:Array[String] = {
+
+    val text = laZysource
+
+    val lineBuf = new ArrayBuffer[String]()
+
+    var charBuf = new ArrayBuffer[Char]()
+
+    var previousChar:Char = 'a'
+    import RecorderMacro._
+    for (c <- text.toCharArray) {
+      def closeLine(){
+        lineBuf.append(charBuf.mkString)
+        charBuf = new ArrayBuffer[Char]()
+      }
+
+      (c: @switch) match {
+        case CR => closeLine()
+        case LF => if (previousChar != CR) {closeLine()}
+        case FF|SU  => closeLine()
+        case _  => charBuf.append(c)
+      }
+
+      previousChar = c
+    }
+
+    lineBuf.toArray
+
+  }
 }

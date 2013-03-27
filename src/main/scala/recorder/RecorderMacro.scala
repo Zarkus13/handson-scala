@@ -22,7 +22,7 @@ class RecorderMacro[C <: Context](val context: C) {
         val testExpressionLineEnd:Int  = context.literal(texts._3).splice
 
         MyFunSuite.testBody(testName.splice, suite.splice, anchorRecorder.splice)(testFun.splice)(new TestContext(
-          context.literal(texts._1).splice.split(RecorderMacro.lineSep), testExpressionLineStart, testExpressionLineEnd))
+          context.literal(texts._1).splice, testExpressionLineStart, testExpressionLineEnd))
     }
   }
 
@@ -35,34 +35,12 @@ class RecorderMacro[C <: Context](val context: C) {
       }
 
     }
-    val chars = new Chars {}
     val (lstart, lend) = lines(recording)
 
     val source = recording.pos.source
 
-    val lineBuf = new ArrayBuffer[String]()
 
-    var charBuf = new ArrayBuffer[Char]()
-
-    var previousChar:Char = 'a'
-    import RecorderMacro._
-    for (c <- source.content) {
-      def closeLine(){
-        lineBuf.append(charBuf.mkString)
-        charBuf = new ArrayBuffer[Char]()
-      }
-
-      (c: @switch) match {
-        case CR => closeLine()
-        case LF => if (previousChar != CR) {closeLine()}
-        case FF|SU  => closeLine()
-        case _  => charBuf.append(c)
-      }
-
-      previousChar = c
-    }
-
-    val sourceContent:String =  lineBuf.mkString(RecorderMacro.lineSep)
+    val sourceContent:String =  source.content.mkString
     (sourceContent, lstart, lend)
 
   }
