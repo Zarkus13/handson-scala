@@ -58,10 +58,6 @@ object MyFunSuite  {
           prefix + completewithspace(number) + " |" + line
       }
     )
-    /*source.map( t => {
-      val prefix: String = if(t._2 == errorLine) " ->" else "   "
-      prefix + completewithspace(t._2) + " |" + t._1
-      })*/
   }
 
   def sourceProcessor(source:Array[String]):Array[(String,Int)] = {
