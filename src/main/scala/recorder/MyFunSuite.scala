@@ -41,11 +41,6 @@ object MyFunSuite  {
   }
 
 
-  def fileToArray(file:File):Array[String] = {
-    scala.io.Source.fromFile(file, "utf-8").getLines().toArray
-  }
-
-
   def testBody(testName: String, testSuite: MyFunSuite, anchorRecorder: AnchorRecorder)(testFun: => Unit)(context: TestContext) {
 
     val suite = testSuite
@@ -143,4 +138,6 @@ object MyFunSuite  {
   }
 }
 
-case class TestContext(source:Array[String], testStartLine:Int,testEndLine:Int)
+class TestContext( laZysource: => Array[String], val testStartLine:Int,val testEndLine:Int)   {
+  lazy val source = laZysource
+}

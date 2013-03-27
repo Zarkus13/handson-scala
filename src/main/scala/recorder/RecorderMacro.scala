@@ -4,6 +4,8 @@ package recorder
 import reflect.macros.Context
 import org.scalatest.exceptions._
 import reflect.internal.Chars
+import collection.mutable.ArrayBuffer
+import annotation.switch
 
 class RecorderMacro[C <: Context](val context: C) {
   import context.universe._
@@ -19,9 +21,8 @@ class RecorderMacro[C <: Context](val context: C) {
 
         val testExpressionLineEnd:Int  = context.literal(texts._3).splice
 
-        val content:Array[String] = context.literal(texts._1).splice.split(RecorderMacro.lineSep)
-
-        MyFunSuite.testBody(testName.splice, suite.splice, anchorRecorder.splice)(testFun.splice)(new TestContext(content, testExpressionLineStart, testExpressionLineEnd))
+        MyFunSuite.testBody(testName.splice, suite.splice, anchorRecorder.splice)(testFun.splice)(new TestContext(
+          context.literal(texts._1).splice.split(RecorderMacro.lineSep), testExpressionLineStart, testExpressionLineEnd))
     }
   }
 
@@ -39,11 +40,29 @@ class RecorderMacro[C <: Context](val context: C) {
 
     val source = recording.pos.source
 
-    val sourceFile:java.io.File = source.file.file.asInstanceOf[java.io.File]
+    val lineBuf = new ArrayBuffer[String]()
 
-    //val sourceContent = source.content.map(c => if (chars.isLineBreakChar(c.toChar)) RecorderMacro.lineSep else c.toString()).mkString
+    var charBuf = new ArrayBuffer[Char]()
 
-    val sourceContent:String =  MyFunSuite.fileToArray(sourceFile).mkString(RecorderMacro.lineSep)
+    var previousChar:Char = 'a'
+    import RecorderMacro._
+    for (c <- source.content) {
+      def closeLine(){
+        lineBuf.append(charBuf.mkString)
+        charBuf = new ArrayBuffer[Char]()
+      }
+
+      (c: @switch) match {
+        case CR => closeLine()
+        case LF => if (previousChar != CR) {closeLine()}
+        case FF|SU  => closeLine()
+        case _  => charBuf.append(c)
+      }
+
+      previousChar = c
+    }
+
+    val sourceContent:String =  lineBuf.mkString(RecorderMacro.lineSep)
     (sourceContent, lstart, lend)
 
   }
@@ -52,6 +71,13 @@ class RecorderMacro[C <: Context](val context: C) {
 
 
 object RecorderMacro {
+
+
+  final val LF = '\u000A'
+  final val FF = '\u000C'
+  final val CR = '\u000D'
+  final val SU = '\u001A'
+
 
   lazy val lineSep:String = "-----"
 
