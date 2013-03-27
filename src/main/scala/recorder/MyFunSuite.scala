@@ -50,7 +50,7 @@ object MyFunSuite  {
 
       val testExpressionLineStart = context.testStartLine
       val testExpressionLineEnd = context.testEndLine
-      val content = context.source
+      lazy val content = context.source
 
       lazy val testSourceFile: Array[(String, Int)] = {
 
