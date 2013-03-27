@@ -22,7 +22,17 @@ trait MyFunSuite extends FunSuite {
 
 object MyFunSuite  {
 
-  def prettyShow(source:Array[(String,Int)], errorLine:Int): Array[String] = {
+  def mergeSourceAndAnchor(source:List[(String,Int)], anchorsMessages:List[AnchorValue]): List[(String, Int, Option[String])] = {
+    (source, anchorsMessages) match {
+      case ( shead :: stail, ahead :: atail ) if(shead._2 == ahead.line) =>
+          (shead._1, shead._2, Some(ahead.name + " => " + ahead.value)) :: mergeSourceAndAnchor(stail, atail)
+      case ( h :: t, _ ) =>
+        (h._1, h._2, None) :: mergeSourceAndAnchor(t, anchorsMessages)
+      case _ => Nil
+    }
+  }
+
+  def prettyShow(source:Array[(String,Int)], errorLine:Int, anchorsMessages:List[AnchorValue]): List[String] = {
     def intLen(i:Int) = i.toString.length
 
     val len:Int = 4
@@ -30,11 +40,28 @@ object MyFunSuite  {
     def completewithspace(i:Int):String = {
       (" " * (len - intLen(i)))  + i.toString
     }
+    def spacehead(s:String):String = {
+      val space = "(\\s*).*".r
+      s match {
+        case space(spaces) => spaces
+        case _ => ""
+      }
 
-    source.map( t => {
+    }
+    mergeSourceAndAnchor(source.toList, anchorsMessages).map(
+      {
+        case (line, number, Some(anchor)) =>
+          val prefix: String = if(number == errorLine) " ->" else "   "
+          prefix + completewithspace(number) + " |" + line + "\n         " + spacehead(line) + anchor
+        case (line, number, _ ) =>
+          val prefix: String = if(number == errorLine) " ->" else "   "
+          prefix + completewithspace(number) + " |" + line
+      }
+    )
+    /*source.map( t => {
       val prefix: String = if(t._2 == errorLine) " ->" else "   "
       prefix + completewithspace(t._2) + " |" + t._1
-      })
+      })*/
   }
 
   def sourceProcessor(source:Array[String]):Array[(String,Int)] = {
@@ -70,14 +97,14 @@ object MyFunSuite  {
 
 
       def ctx(errorLine: Int): String = {
-        MyFunSuite.prettyShow(testSourceFile.drop(testExpressionLineStart - 1).take(testExpressionLineEnd - testExpressionLineStart + 2), errorLine).mkString("\n") + anchorsToMessages
+        MyFunSuite.prettyShow(testSourceFile.drop(testExpressionLineStart - 1).take(testExpressionLineEnd - testExpressionLineStart + 2), errorLine, anchorRecorder.records).mkString("\n") // + anchorsToMessages
       }
       def errorCtx(errorLine: Int): String = {
-        MyFunSuite.prettyShow(testSourceFile.drop(errorLine - 2).take(3), errorLine).mkString("\n")
+        MyFunSuite.prettyShow(testSourceFile.drop(errorLine - 2).take(3), errorLine, anchorRecorder.records).mkString("\n")
       }
 
       def completeContext(errorLine: Option[Int]): String = {
-        errorLine.map(i => errorCtx(i) + "\n     ...\n" + ctx(i)).getOrElse("") + anchorsToMessages
+        errorLine.map(i => errorCtx(i) + "\n     ...\n" + ctx(i)).getOrElse("") // + anchorsToMessages
       }
 
       val suitePackage = suite.getClass.getPackage.toString
@@ -105,7 +132,6 @@ object MyFunSuite  {
               val notimpl = e.getStackTrace()(2)
               val location = suitePackage + java.io.File.separator + notimpl.getFileName + ":" + notimpl.getLineNumber
               throw new MyTestPendingException(mes,
-                //Some("     ...\n" + completeContext(Some(notimpl.getLineNumber)))
                 Some(ctx(notimpl.getLineNumber))
                 , e, Some(location))
             case _ =>
@@ -117,9 +143,6 @@ object MyFunSuite  {
         }
         case e: Throwable => {
 
-          //val ctx = e.getStackTrace.take(7).mkString("\n") //context.literal(getTexts(testFun.tree)).splice
-          //val firstStackTrace = e.getStackTrace()(0)
-
           val firstGoodStackTrace = e.getStackTrace.find(
             st => st.getClassName.contains(suite.getClass.getName)
           )
@@ -127,9 +150,7 @@ object MyFunSuite  {
           val location = firstGoodStackTrace.map(st => suitePackage + java.io.File.separator + st.getFileName + ":" + st.getLineNumber)
           val failContext = firstGoodStackTrace.map(st => ctx(st.getLineNumber) + "\n\n")
           val myctx = failContext.getOrElse("") + e.getStackTrace.take(7).mkString("\n")
-          //val myctx = e.getStackTrace.take(7).mkString("\n")
-          //val location = suitePackage + java.io.File.separator + firstStackTrace.getFileName + ":" + firstStackTrace.getLineNumber
-          val mes = e.toString + location.map("\n    at " + _) // Option(e.getMessage).getOrElse("")
+          val mes = e.toString + location.map("\n    at " + _)
           throw new MyException(mes, Some(myctx), e, location)
 
         }

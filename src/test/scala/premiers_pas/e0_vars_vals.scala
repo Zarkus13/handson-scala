@@ -17,6 +17,7 @@ class e0_vars_vals extends HandsOnSuiteP1 {
 
   exercice("Les vars peuvent être réaffectées") {
     var a = 5
+    anchor(a)
     a should be(__)
 
     anchor(a)
