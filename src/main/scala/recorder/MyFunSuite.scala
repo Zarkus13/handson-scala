@@ -23,11 +23,13 @@ trait MyFunSuite extends FunSuite {
 object MyFunSuite  {
 
   def mergeSourceAndAnchor(source:List[(String,Int)], anchorsMessages:List[AnchorValue]): List[(String, Int, Option[String])] = {
-    (source, anchorsMessages) match {
-      case ( shead :: stail, ahead :: atail ) if(shead._2 == ahead.line) =>
-          (shead._1, shead._2, Some(ahead.name + " => " + ahead.value)) :: mergeSourceAndAnchor(stail, atail)
-      case ( h :: t, _ ) =>
-        (h._1, h._2, None) :: mergeSourceAndAnchor(t, anchorsMessages)
+    def anchor(line:Int, anchorsMessages:List[AnchorValue]):Option[String] = {
+      val mess = anchorsMessages.filter( _.line == line).map( a => a.name + " => " + a.value).mkString("\n")
+      if(mess.trim == "")None else Some(mess)
+    }
+    source match {
+      case shead :: stail  =>
+          (shead._1, shead._2, anchor(shead._2, anchorsMessages)) :: mergeSourceAndAnchor(stail, anchorsMessages)
       case _ => Nil
     }
   }
@@ -46,13 +48,13 @@ object MyFunSuite  {
         case space(spaces) => spaces
         case _ => ""
       }
-
     }
-    mergeSourceAndAnchor(source.toList, anchorsMessages).map(
+    mergeSourceAndAnchor(source.toList, anchorsMessages.reverse).map(
       {
         case (line, number, Some(anchor)) =>
           val prefix: String = if(number == errorLine) " ->" else "   "
-          prefix + completewithspace(number) + " |" + line + "\n         " + spacehead(line) + anchor
+          println(anchor)
+          prefix + completewithspace(number) + " |" + line +  anchor.split("\n").map( i => "\n         " +spacehead(line) + i).mkString
         case (line, number, _ ) =>
           val prefix: String = if(number == errorLine) " ->" else "   "
           prefix + completewithspace(number) + " |" + line
