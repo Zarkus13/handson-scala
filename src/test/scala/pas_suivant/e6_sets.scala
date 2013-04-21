@@ -17,10 +17,10 @@ class e6_sets extends HandsOnSuiteP1 {
   */
   exercice("Création d'un Set") {
     val mySet = Set("Sud", "Est", "Ouest", "Nord")
-    mySet.size should be(__)
+    mySet.size should be(4)
 
     val myOtherSet = Set("Sud", "Est", "Sud", "Nord")
-    myOtherSet.size should be(__)
+    myOtherSet.size should be(3)
   }
 
   /**
@@ -31,20 +31,20 @@ class e6_sets extends HandsOnSuiteP1 {
     val mySet = Set("Sud", "Est", "Sud")
     val aNewSet = mySet + "Nord"
 
-    aNewSet.contains("Nord") should be(__)
+    aNewSet.contains("Nord") should be(true)
 
     // suppression
     val mySetBis = Set("Sud", "Est", "Ouest", "Nord")
     val aNewSetBis = mySetBis - "Nord"
     // la méthode contains
-    aNewSetBis.contains("Nord") should be(__)
+    aNewSetBis.contains("Nord") should be(false)
 
     // suppressions multiples
     val myOtherSet = Set("Sud", "Est", "Ouest", "Nord")
     val aNewOtherSet = mySet -- List("Ouest", "Nord")
 
-    aNewOtherSet.contains("Nord") should be(__)
-    aNewOtherSet.contains("Ouest") should be(__)
+    aNewOtherSet.contains("Nord") should be(false)
+    aNewOtherSet.contains("Ouest") should be(false)
   }
 
   /**
@@ -53,8 +53,8 @@ class e6_sets extends HandsOnSuiteP1 {
   exercice("On peut mixer les types") {
     val mySet = Set("Sud", "Nord", 12)
 
-    mySet.contains(12) should be(__)
-    mySet.contains("Sud") should be(__)
+    mySet.contains(12) should be(true)
+    mySet.contains("Sud") should be(true)
   }
 
   /**
@@ -63,8 +63,9 @@ class e6_sets extends HandsOnSuiteP1 {
   exercice("Accesseur") {
     val mySet = Set("Nord", "Sud", 12)
 
-    mySet(12) should be(__)
-    mySet("Nord") should be(__)
+    mySet(12) should be(true)
+    mySet("Nord") should be(true)
+    mySet("toto") should be(false)
   }
 
   /**
@@ -75,11 +76,11 @@ class e6_sets extends HandsOnSuiteP1 {
     val mySet2 = Set("Est", "Sud", "Nord")
     val aNewSet1 = mySet1 union mySet2 // à la place de "union" on peut utiliser l'opérateur "|"
 
-    aNewSet1.equals(Set("Nord", "Sud-Est", "Sud", "Nord-Ouest", "Est")) should be(__)
+    aNewSet1.equals(Set("Nord", "Sud-Est", "Sud", "Nord-Ouest", "Est")) should be(true)
 
     val aNewSet2 = mySet1 intersect mySet2  // à la place de "intersect" on peut utiliser l'opérateur "&"
 
-    aNewSet2.equals(Set("Est", "Nord")) should be(__)
+    aNewSet2.equals(Set("Est", "Nord")) should be(true)
   }
 
   /**
@@ -90,7 +91,7 @@ class e6_sets extends HandsOnSuiteP1 {
     val mySet2 = Set("Nord", "Est")
     val aNewSet = mySet1 diff mySet2 // Note: vous pouvez utiliser l’opérateur "&~" si vous le voulez *vraiment*.
 
-    aNewSet.equals(Set("Sud", "Ouest")) should be(__)
+    aNewSet.equals(Set("Sud", "Ouest")) should be(true)
   }
 
   /**
@@ -102,7 +103,7 @@ class e6_sets extends HandsOnSuiteP1 {
     for (i <- mySet)
       sum = sum + i
 
-    sum should be(__)
+    sum should be(17)
   }
 
   /**
@@ -112,6 +113,6 @@ class e6_sets extends HandsOnSuiteP1 {
     val mySet1 = Set("Nord", "Sud", "Ouest", "Est")
     val mySet2 = Set("Ouest", "Sud", "Est", "Nord")
 
-    mySet1.equals(mySet2) should be(__)
+    mySet1.equals(mySet2) should be(true)
   }
 }

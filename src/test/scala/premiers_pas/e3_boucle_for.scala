@@ -85,8 +85,8 @@ class e3_boucle_for extends HandsOnSuiteP1 {
       y <- yValues
     }
     yield (x, y)
-    println(coordinates(4))
-    coordinates(4) should be(__)
+
+    coordinates(4) should be((3, 1))
   }
 
   /**

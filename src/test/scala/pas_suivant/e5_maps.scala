@@ -17,16 +17,18 @@ class e5_maps extends HandsOnSuiteP1 {
   */
   exercice("C’est facile de créer une map !") {
     val myMap = Map("PA" -> "Paris", "BE" -> "Besançon", "BL" -> "Belfort")
-    myMap.size should be(__)
+    myMap.size should be(3)
     //la tête
-    myMap.head should be(__)
+    myMap.head should be(("PA", "Paris"))
     // il n’y a pas de notion d’ordre dans une map
     val myMapBis = Map("BE" -> "Besançon", "BL" -> "Belfort", "PA" -> "Paris")
-    myMap.equals(myMapBis) should be(__)
+    myMap.equals(myMapBis) should be(true)
+    myMap == myMapBis should be(true)
+
     // impact des 'doublons'
     val myOtherMap = Map("PA" -> "Paris", "BE" -> "Besançon", "PA" -> "Palo Alto")
-    myOtherMap.size should be(__)
-    myOtherMap("PA") should be(__)
+    myOtherMap.size should be(2)
+    myOtherMap("PA") should be("Palo Alto")
   }
 
   /**
@@ -37,8 +39,8 @@ class e5_maps extends HandsOnSuiteP1 {
     // ajout d’un élément
     val aNewMap = myMap + ("BL" -> "Belfort")
 
-    myMap.contains("BL") should be (__) // les maps sont immuables par défaut
-    aNewMap.contains("BL") should be(__)
+    myMap.contains("BL") should be (false) // les maps sont immuables par défaut
+    aNewMap.contains("BL") should be(true)
   }
 
   /**
@@ -46,8 +48,8 @@ class e5_maps extends HandsOnSuiteP1 {
   */
   exercice("On peut mixer les types de clé") {
     val myMap = Map("Ann Arbor" -> "MI", 49931 -> "MI")
-    myMap("Ann Arbor") should be(__)
-    myMap(49931) should be(__)
+    myMap("Ann Arbor") should be("MI")
+    myMap(49931) should be("MI")
   }
 
   /**
@@ -58,11 +60,11 @@ class e5_maps extends HandsOnSuiteP1 {
 
     // suppression d’un élément
     val aNewMap = myMap - "NA"
-    aNewMap.contains("NA") should be(__)
+    aNewMap.contains("NA") should be(false)
     // suppressions multiples
     val aNewOtherMap = myMap -- List("BE", "BL")
-    aNewOtherMap.contains("BE") should be(__)
-    aNewOtherMap.contains("BL") should be(__)
+    aNewOtherMap.contains("BE") should be(false)
+    aNewOtherMap.contains("BL") should be(false)
     // une exception est lancée dans le cas où l’élément n’est pas présent dans la map
     intercept[NoSuchElementException] {
       aNewOtherMap("BL") should be("Belfort")

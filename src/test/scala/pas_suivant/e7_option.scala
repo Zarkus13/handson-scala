@@ -27,17 +27,17 @@ class e7_option extends HandsOnSuiteP1 {
   * Quelques tests rapides
   */
   exercice("None est égal à...None") {
-   None should be(__)
+   None should be(None)
   }
 
   exercice("None est identique à None") {
     val a = None
     // ici on dénote le fait d’être identique, et == l’égalité
-    a should be(__)
+    a should be(None)
   }
 
   exercice("On peut convertir None en une String") {
-    None.toString should be(__)
+    None.toString should be("None")
   }
 
   /*
@@ -48,7 +48,7 @@ class e7_option extends HandsOnSuiteP1 {
   */
 
   exercice("None est considéré comme vide") {
-    None.isEmpty should be(__)
+    None.isEmpty should be(true)
   }
 
   exercice("On ne peut pas cast None en n’importe quel objet") {
@@ -59,21 +59,21 @@ class e7_option extends HandsOnSuiteP1 {
 
   exercice("None peut être utilisé avec le type Option, plutôt qu’avec null") {
     val optional: Option[String] = None
-    optional.isEmpty should be(__)
-    optional should be(__)
+    optional.isEmpty should be(true)
+    optional should be(None)
   }
 
   exercice("Some est l’opposé de None pour le type Option") {
     val optional: Option[String] = Some("Some Value")
-    (optional == None) should be(__)
-    optional.isEmpty should be(__)
+    (optional == None) should be(false)
+    optional.isEmpty should be(false)
   }
 
   exercice("Option.getOrElse peut être utilisé pour obtenir une valeur par défaut dans le cas de None") {
     val optional: Option[String] = Some("Some Value")
     val optional2: Option[String] = None
-    optional.getOrElse("No Value") should be(__)
-    optional2.getOrElse("No Value") should be(__)
+    optional.getOrElse("No Value") should be("Some Value")
+    optional2.getOrElse("No Value") should be("No Value")
   }
 
 }
