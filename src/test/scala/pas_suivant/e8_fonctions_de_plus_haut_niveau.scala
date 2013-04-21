@@ -36,7 +36,7 @@ class e8_fonctions_de_plus_haut_niveau extends HandsOnSuiteP1 {
     def result = List(1, 2, 3) map lambda
     // le compilateur Scala fait de l’inférence de type donc on peut se passer de préciser le type
     // des variables que l’on définit
-    result should be(__)
+    result should be(List(2, 3, 4))
   }
 
   /**
@@ -48,7 +48,7 @@ class e8_fonctions_de_plus_haut_niveau extends HandsOnSuiteP1 {
       def apply(v1: Int) = v1 + 1
     }
     def result = List(1, 2, 3) map lambda
-    result should be(__)
+    result should be(List(2, 3, 4))
   }
 
   /**
@@ -60,7 +60,7 @@ class e8_fonctions_de_plus_haut_niveau extends HandsOnSuiteP1 {
     }
 
     def result = List(1, 2, 3) map lambda
-    result should be(__)
+    result should be(List(2, 3, 4))
   }
 
   /**
@@ -68,10 +68,10 @@ class e8_fonctions_de_plus_haut_niveau extends HandsOnSuiteP1 {
   */
   exercice("simplement") {
     def result = List(1, 2, 3) map ( x => x + 1 )
-    result should be(__)
+    result should be(List(2, 3, 4))
 
     def encorePlusSimple = List(1, 2, 3) map ( _ + 1 )
-    encorePlusSimple should be(__)
+    encorePlusSimple should be(List(2, 3, 4))
   }
 
 
@@ -86,14 +86,14 @@ class e8_fonctions_de_plus_haut_niveau extends HandsOnSuiteP1 {
       }
     }
 
-    addWithoutSyntaxSugar(1)(2) should be(__)
+    addWithoutSyntaxSugar(1)(2) should be(3)
 
     //ou plus simplement
     def add(x: Int) = (y: Int) => x + y
-    add(2)(3) should be(__)
+    add(2)(3) should be(5)
 
     def fiveAdder = add(5)
-    fiveAdder(5) should be(__)
+    fiveAdder(5) should be(10)
   }
 
   /**
@@ -110,12 +110,12 @@ class e8_fonctions_de_plus_haut_niveau extends HandsOnSuiteP1 {
 
     makeWhatEverYouLike(List("ABC", "XYZ", "123"), {
       x => x.toLowerCase
-    }) should be(__)
+    }) should be(List("abc", "xyz", "123"))
 
     //using it inline
     List("Scala", "Erlang", "Clojure") map {
       _.length
-    } should be(__)
+    } should be(List(5, 6, 7))
   }
 
   /**
@@ -124,8 +124,8 @@ class e8_fonctions_de_plus_haut_niveau extends HandsOnSuiteP1 {
   exercice("La currification est une technique qui permet de transformer une fonction avec des paramètres multiples en une fonction à un seul paramètre") {
     def multiply(x: Int, y: Int) = x * y
     val multiplyCurried = (multiply _).curried
-    multiply(4, 5) should be(__)
-    multiplyCurried(3)(2) should be(__)
+    multiply(4, 5) should be(20)
+    multiplyCurried(3)(2) should be(6)
   }
 
 
@@ -135,9 +135,9 @@ class e8_fonctions_de_plus_haut_niveau extends HandsOnSuiteP1 {
     }
     def onlyEven(x: Int) = x % 2 == 0
     val xs = List(12, 11, 5, 20, 3, 13, 2)
-    customFilter(onlyEven)(xs) should be(__)
+    customFilter(onlyEven)(xs) should be(List(12, 20, 2))
 
     val onlyEvenFilter = customFilter(onlyEven) _  //attention au caractère '_' qui indique au compilateur qu’il ne faut pas appliquer la fonction mais y faire référence
-    onlyEvenFilter(xs) should be(__)
+    onlyEvenFilter(xs) should be(List(12, 20, 2))
   }
 }
