@@ -14,7 +14,7 @@ class e3_boucle_for extends HandsOnSuiteP1 {
 
   exercice("les for c’est assez simple") {
     //0, 1, 2, 3, 4, 5, 6, 7, 8, 9
-    val quelqueNombres = Range(0, 10)
+    val quelqueNombres = 0 to 9
     // on peut aussi utiliser 'until' et 'to' => 0 until 10 == Range(0,10) == 0 to 9
 
     // n’hésitez pas à jouer avec l’interpréteur Scala ouvert via
@@ -26,7 +26,7 @@ class e3_boucle_for extends HandsOnSuiteP1 {
       somme += i
     }
 
-    somme should equal(__)
+    somme should equal(45)
   }
 
   /**
@@ -42,7 +42,7 @@ class e3_boucle_for extends HandsOnSuiteP1 {
       }
     }
 
-    somme should equal(__)
+    somme should equal(20)
   }
 
   //for comprehensions
@@ -68,7 +68,7 @@ class e3_boucle_for extends HandsOnSuiteP1 {
     //en utilisant une autre fonction passée en paramètre.
     //En ce qui concerne les fonctions d’ordre supérieur et les lambda expression,
     //un jeu de tests est prévu dans la suite de l’atelier
-    uneListe.reduceLeft( (k,l) => k + l) should be(__)
+    uneListe.reduceLeft( (k,l) => k + l) should be(20)
   }
 
 
@@ -85,6 +85,7 @@ class e3_boucle_for extends HandsOnSuiteP1 {
       y <- yValues
     }
     yield (x, y)
+    println(coordinates(4))
     coordinates(4) should be(__)
   }
 
